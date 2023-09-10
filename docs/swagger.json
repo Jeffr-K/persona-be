@@ -1,0 +1,22 @@
+{
+    "swagger": "2.0",
+    "info": {
+        "title": "Sunnyside",
+        "contact": {},
+        "version": "0.1"
+    },
+    "paths": {
+        "/user/search": {
+            "get": {
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                }
+            }
+        }
+    }
+}

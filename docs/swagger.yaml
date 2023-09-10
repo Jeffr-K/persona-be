@@ -1,0 +1,13 @@
+info:
+  contact: {}
+  title: Sunnyside
+  version: "0.1"
+paths:
+  /user/search:
+    get:
+      responses:
+        "200":
+          description: OK
+          schema:
+            type: string
+swagger: "2.0"
