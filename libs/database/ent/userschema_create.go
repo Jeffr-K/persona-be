@@ -6,10 +6,18 @@ import (
 	"context"
 	"errors"
 	"fmt"
-	"iam/libs/database/ent/userschema"
+	"persona/libs/database/ent/followschema"
+	"persona/libs/database/ent/namecardschema"
+	"persona/libs/database/ent/personalizationschema"
+	"persona/libs/database/ent/profileschema"
+	"persona/libs/database/ent/referrerschema"
+	"persona/libs/database/ent/roleschema"
+	"persona/libs/database/ent/userschema"
+	"time"
 
 	"entgo.io/ent/dialect/sql/sqlgraph"
 	"entgo.io/ent/schema/field"
+	"github.com/google/uuid"
 )
 
 // UserSchemaCreate is the builder for creating a UserSchema entity.
@@ -17,6 +25,20 @@ type UserSchemaCreate struct {
 	config
 	mutation *UserSchemaMutation
 	hooks    []Hook
+}
+
+// SetUUID sets the "uuid" field.
+func (usc *UserSchemaCreate) SetUUID(u uuid.UUID) *UserSchemaCreate {
+	usc.mutation.SetUUID(u)
+	return usc
+}
+
+// SetNillableUUID sets the "uuid" field if the given value is not nil.
+func (usc *UserSchemaCreate) SetNillableUUID(u *uuid.UUID) *UserSchemaCreate {
+	if u != nil {
+		usc.SetUUID(*u)
+	}
+	return usc
 }
 
 // SetUsername sets the "username" field.
@@ -37,6 +59,144 @@ func (usc *UserSchemaCreate) SetEmail(s string) *UserSchemaCreate {
 	return usc
 }
 
+// SetCreatedAt sets the "createdAt" field.
+func (usc *UserSchemaCreate) SetCreatedAt(t time.Time) *UserSchemaCreate {
+	usc.mutation.SetCreatedAt(t)
+	return usc
+}
+
+// SetNillableCreatedAt sets the "createdAt" field if the given value is not nil.
+func (usc *UserSchemaCreate) SetNillableCreatedAt(t *time.Time) *UserSchemaCreate {
+	if t != nil {
+		usc.SetCreatedAt(*t)
+	}
+	return usc
+}
+
+// SetUpdatedAt sets the "updatedAt" field.
+func (usc *UserSchemaCreate) SetUpdatedAt(t time.Time) *UserSchemaCreate {
+	usc.mutation.SetUpdatedAt(t)
+	return usc
+}
+
+// SetNillableUpdatedAt sets the "updatedAt" field if the given value is not nil.
+func (usc *UserSchemaCreate) SetNillableUpdatedAt(t *time.Time) *UserSchemaCreate {
+	if t != nil {
+		usc.SetUpdatedAt(*t)
+	}
+	return usc
+}
+
+// AddRoleIDs adds the "roles" edge to the RoleSchema entity by IDs.
+func (usc *UserSchemaCreate) AddRoleIDs(ids ...int) *UserSchemaCreate {
+	usc.mutation.AddRoleIDs(ids...)
+	return usc
+}
+
+// AddRoles adds the "roles" edges to the RoleSchema entity.
+func (usc *UserSchemaCreate) AddRoles(r ...*RoleSchema) *UserSchemaCreate {
+	ids := make([]int, len(r))
+	for i := range r {
+		ids[i] = r[i].ID
+	}
+	return usc.AddRoleIDs(ids...)
+}
+
+// SetProfileID sets the "profile" edge to the ProfileSchema entity by ID.
+func (usc *UserSchemaCreate) SetProfileID(id int) *UserSchemaCreate {
+	usc.mutation.SetProfileID(id)
+	return usc
+}
+
+// SetNillableProfileID sets the "profile" edge to the ProfileSchema entity by ID if the given value is not nil.
+func (usc *UserSchemaCreate) SetNillableProfileID(id *int) *UserSchemaCreate {
+	if id != nil {
+		usc = usc.SetProfileID(*id)
+	}
+	return usc
+}
+
+// SetProfile sets the "profile" edge to the ProfileSchema entity.
+func (usc *UserSchemaCreate) SetProfile(p *ProfileSchema) *UserSchemaCreate {
+	return usc.SetProfileID(p.ID)
+}
+
+// SetFollowID sets the "follow" edge to the FollowSchema entity by ID.
+func (usc *UserSchemaCreate) SetFollowID(id int) *UserSchemaCreate {
+	usc.mutation.SetFollowID(id)
+	return usc
+}
+
+// SetNillableFollowID sets the "follow" edge to the FollowSchema entity by ID if the given value is not nil.
+func (usc *UserSchemaCreate) SetNillableFollowID(id *int) *UserSchemaCreate {
+	if id != nil {
+		usc = usc.SetFollowID(*id)
+	}
+	return usc
+}
+
+// SetFollow sets the "follow" edge to the FollowSchema entity.
+func (usc *UserSchemaCreate) SetFollow(f *FollowSchema) *UserSchemaCreate {
+	return usc.SetFollowID(f.ID)
+}
+
+// SetReferrerID sets the "referrer" edge to the ReferrerSchema entity by ID.
+func (usc *UserSchemaCreate) SetReferrerID(id int) *UserSchemaCreate {
+	usc.mutation.SetReferrerID(id)
+	return usc
+}
+
+// SetNillableReferrerID sets the "referrer" edge to the ReferrerSchema entity by ID if the given value is not nil.
+func (usc *UserSchemaCreate) SetNillableReferrerID(id *int) *UserSchemaCreate {
+	if id != nil {
+		usc = usc.SetReferrerID(*id)
+	}
+	return usc
+}
+
+// SetReferrer sets the "referrer" edge to the ReferrerSchema entity.
+func (usc *UserSchemaCreate) SetReferrer(r *ReferrerSchema) *UserSchemaCreate {
+	return usc.SetReferrerID(r.ID)
+}
+
+// SetPersonalizationID sets the "personalization" edge to the PersonalizationSchema entity by ID.
+func (usc *UserSchemaCreate) SetPersonalizationID(id int) *UserSchemaCreate {
+	usc.mutation.SetPersonalizationID(id)
+	return usc
+}
+
+// SetNillablePersonalizationID sets the "personalization" edge to the PersonalizationSchema entity by ID if the given value is not nil.
+func (usc *UserSchemaCreate) SetNillablePersonalizationID(id *int) *UserSchemaCreate {
+	if id != nil {
+		usc = usc.SetPersonalizationID(*id)
+	}
+	return usc
+}
+
+// SetPersonalization sets the "personalization" edge to the PersonalizationSchema entity.
+func (usc *UserSchemaCreate) SetPersonalization(p *PersonalizationSchema) *UserSchemaCreate {
+	return usc.SetPersonalizationID(p.ID)
+}
+
+// SetNamecardID sets the "namecard" edge to the NamecardSchema entity by ID.
+func (usc *UserSchemaCreate) SetNamecardID(id int) *UserSchemaCreate {
+	usc.mutation.SetNamecardID(id)
+	return usc
+}
+
+// SetNillableNamecardID sets the "namecard" edge to the NamecardSchema entity by ID if the given value is not nil.
+func (usc *UserSchemaCreate) SetNillableNamecardID(id *int) *UserSchemaCreate {
+	if id != nil {
+		usc = usc.SetNamecardID(*id)
+	}
+	return usc
+}
+
+// SetNamecard sets the "namecard" edge to the NamecardSchema entity.
+func (usc *UserSchemaCreate) SetNamecard(n *NamecardSchema) *UserSchemaCreate {
+	return usc.SetNamecardID(n.ID)
+}
+
 // Mutation returns the UserSchemaMutation object of the builder.
 func (usc *UserSchemaCreate) Mutation() *UserSchemaMutation {
 	return usc.mutation
@@ -44,6 +204,7 @@ func (usc *UserSchemaCreate) Mutation() *UserSchemaMutation {
 
 // Save creates the UserSchema in the database.
 func (usc *UserSchemaCreate) Save(ctx context.Context) (*UserSchema, error) {
+	usc.defaults()
 	return withHooks(ctx, usc.sqlSave, usc.mutation, usc.hooks)
 }
 
@@ -69,8 +230,27 @@ func (usc *UserSchemaCreate) ExecX(ctx context.Context) {
 	}
 }
 
+// defaults sets the default values of the builder before save.
+func (usc *UserSchemaCreate) defaults() {
+	if _, ok := usc.mutation.UUID(); !ok {
+		v := userschema.DefaultUUID()
+		usc.mutation.SetUUID(v)
+	}
+	if _, ok := usc.mutation.CreatedAt(); !ok {
+		v := userschema.DefaultCreatedAt()
+		usc.mutation.SetCreatedAt(v)
+	}
+	if _, ok := usc.mutation.UpdatedAt(); !ok {
+		v := userschema.DefaultUpdatedAt()
+		usc.mutation.SetUpdatedAt(v)
+	}
+}
+
 // check runs all checks and user-defined validators on the builder.
 func (usc *UserSchemaCreate) check() error {
+	if _, ok := usc.mutation.UUID(); !ok {
+		return &ValidationError{Name: "uuid", err: errors.New(`ent: missing required field "UserSchema.uuid"`)}
+	}
 	if _, ok := usc.mutation.Username(); !ok {
 		return &ValidationError{Name: "username", err: errors.New(`ent: missing required field "UserSchema.username"`)}
 	}
@@ -79,6 +259,12 @@ func (usc *UserSchemaCreate) check() error {
 	}
 	if _, ok := usc.mutation.Email(); !ok {
 		return &ValidationError{Name: "email", err: errors.New(`ent: missing required field "UserSchema.email"`)}
+	}
+	if _, ok := usc.mutation.CreatedAt(); !ok {
+		return &ValidationError{Name: "createdAt", err: errors.New(`ent: missing required field "UserSchema.createdAt"`)}
+	}
+	if _, ok := usc.mutation.UpdatedAt(); !ok {
+		return &ValidationError{Name: "updatedAt", err: errors.New(`ent: missing required field "UserSchema.updatedAt"`)}
 	}
 	return nil
 }
@@ -106,6 +292,10 @@ func (usc *UserSchemaCreate) createSpec() (*UserSchema, *sqlgraph.CreateSpec) {
 		_node = &UserSchema{config: usc.config}
 		_spec = sqlgraph.NewCreateSpec(userschema.Table, sqlgraph.NewFieldSpec(userschema.FieldID, field.TypeInt))
 	)
+	if value, ok := usc.mutation.UUID(); ok {
+		_spec.SetField(userschema.FieldUUID, field.TypeUUID, value)
+		_node.UUID = value
+	}
 	if value, ok := usc.mutation.Username(); ok {
 		_spec.SetField(userschema.FieldUsername, field.TypeString, value)
 		_node.Username = value
@@ -117,6 +307,111 @@ func (usc *UserSchemaCreate) createSpec() (*UserSchema, *sqlgraph.CreateSpec) {
 	if value, ok := usc.mutation.Email(); ok {
 		_spec.SetField(userschema.FieldEmail, field.TypeString, value)
 		_node.Email = value
+	}
+	if value, ok := usc.mutation.CreatedAt(); ok {
+		_spec.SetField(userschema.FieldCreatedAt, field.TypeTime, value)
+		_node.CreatedAt = value
+	}
+	if value, ok := usc.mutation.UpdatedAt(); ok {
+		_spec.SetField(userschema.FieldUpdatedAt, field.TypeTime, value)
+		_node.UpdatedAt = value
+	}
+	if nodes := usc.mutation.RolesIDs(); len(nodes) > 0 {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.O2M,
+			Inverse: false,
+			Table:   userschema.RolesTable,
+			Columns: []string{userschema.RolesColumn},
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: sqlgraph.NewFieldSpec(roleschema.FieldID, field.TypeInt),
+			},
+		}
+		for _, k := range nodes {
+			edge.Target.Nodes = append(edge.Target.Nodes, k)
+		}
+		_spec.Edges = append(_spec.Edges, edge)
+	}
+	if nodes := usc.mutation.ProfileIDs(); len(nodes) > 0 {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.O2O,
+			Inverse: false,
+			Table:   userschema.ProfileTable,
+			Columns: []string{userschema.ProfileColumn},
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: sqlgraph.NewFieldSpec(profileschema.FieldID, field.TypeInt),
+			},
+		}
+		for _, k := range nodes {
+			edge.Target.Nodes = append(edge.Target.Nodes, k)
+		}
+		_spec.Edges = append(_spec.Edges, edge)
+	}
+	if nodes := usc.mutation.FollowIDs(); len(nodes) > 0 {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.M2O,
+			Inverse: false,
+			Table:   userschema.FollowTable,
+			Columns: []string{userschema.FollowColumn},
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: sqlgraph.NewFieldSpec(followschema.FieldID, field.TypeInt),
+			},
+		}
+		for _, k := range nodes {
+			edge.Target.Nodes = append(edge.Target.Nodes, k)
+		}
+		_node.user_schema_follow = &nodes[0]
+		_spec.Edges = append(_spec.Edges, edge)
+	}
+	if nodes := usc.mutation.ReferrerIDs(); len(nodes) > 0 {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.O2O,
+			Inverse: false,
+			Table:   userschema.ReferrerTable,
+			Columns: []string{userschema.ReferrerColumn},
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: sqlgraph.NewFieldSpec(referrerschema.FieldID, field.TypeInt),
+			},
+		}
+		for _, k := range nodes {
+			edge.Target.Nodes = append(edge.Target.Nodes, k)
+		}
+		_spec.Edges = append(_spec.Edges, edge)
+	}
+	if nodes := usc.mutation.PersonalizationIDs(); len(nodes) > 0 {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.O2O,
+			Inverse: false,
+			Table:   userschema.PersonalizationTable,
+			Columns: []string{userschema.PersonalizationColumn},
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: sqlgraph.NewFieldSpec(personalizationschema.FieldID, field.TypeInt),
+			},
+		}
+		for _, k := range nodes {
+			edge.Target.Nodes = append(edge.Target.Nodes, k)
+		}
+		_spec.Edges = append(_spec.Edges, edge)
+	}
+	if nodes := usc.mutation.NamecardIDs(); len(nodes) > 0 {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.O2O,
+			Inverse: false,
+			Table:   userschema.NamecardTable,
+			Columns: []string{userschema.NamecardColumn},
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: sqlgraph.NewFieldSpec(namecardschema.FieldID, field.TypeInt),
+			},
+		}
+		for _, k := range nodes {
+			edge.Target.Nodes = append(edge.Target.Nodes, k)
+		}
+		_spec.Edges = append(_spec.Edges, edge)
 	}
 	return _node, _spec
 }
@@ -135,6 +430,7 @@ func (uscb *UserSchemaCreateBulk) Save(ctx context.Context) ([]*UserSchema, erro
 	for i := range uscb.builders {
 		func(i int, root context.Context) {
 			builder := uscb.builders[i]
+			builder.defaults()
 			var mut Mutator = MutateFunc(func(ctx context.Context, m Mutation) (Value, error) {
 				mutation, ok := m.(*UserSchemaMutation)
 				if !ok {

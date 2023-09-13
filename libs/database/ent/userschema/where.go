@@ -3,9 +3,12 @@
 package userschema
 
 import (
-	"iam/libs/database/ent/predicate"
+	"persona/libs/database/ent/predicate"
+	"time"
 
 	"entgo.io/ent/dialect/sql"
+	"entgo.io/ent/dialect/sql/sqlgraph"
+	"github.com/google/uuid"
 )
 
 // ID filters vertices based on their ID field.
@@ -53,6 +56,11 @@ func IDLTE(id int) predicate.UserSchema {
 	return predicate.UserSchema(sql.FieldLTE(FieldID, id))
 }
 
+// UUID applies equality check predicate on the "uuid" field. It's identical to UUIDEQ.
+func UUID(v uuid.UUID) predicate.UserSchema {
+	return predicate.UserSchema(sql.FieldEQ(FieldUUID, v))
+}
+
 // Username applies equality check predicate on the "username" field. It's identical to UsernameEQ.
 func Username(v string) predicate.UserSchema {
 	return predicate.UserSchema(sql.FieldEQ(FieldUsername, v))
@@ -66,6 +74,56 @@ func Password(v string) predicate.UserSchema {
 // Email applies equality check predicate on the "email" field. It's identical to EmailEQ.
 func Email(v string) predicate.UserSchema {
 	return predicate.UserSchema(sql.FieldEQ(FieldEmail, v))
+}
+
+// CreatedAt applies equality check predicate on the "createdAt" field. It's identical to CreatedAtEQ.
+func CreatedAt(v time.Time) predicate.UserSchema {
+	return predicate.UserSchema(sql.FieldEQ(FieldCreatedAt, v))
+}
+
+// UpdatedAt applies equality check predicate on the "updatedAt" field. It's identical to UpdatedAtEQ.
+func UpdatedAt(v time.Time) predicate.UserSchema {
+	return predicate.UserSchema(sql.FieldEQ(FieldUpdatedAt, v))
+}
+
+// UUIDEQ applies the EQ predicate on the "uuid" field.
+func UUIDEQ(v uuid.UUID) predicate.UserSchema {
+	return predicate.UserSchema(sql.FieldEQ(FieldUUID, v))
+}
+
+// UUIDNEQ applies the NEQ predicate on the "uuid" field.
+func UUIDNEQ(v uuid.UUID) predicate.UserSchema {
+	return predicate.UserSchema(sql.FieldNEQ(FieldUUID, v))
+}
+
+// UUIDIn applies the In predicate on the "uuid" field.
+func UUIDIn(vs ...uuid.UUID) predicate.UserSchema {
+	return predicate.UserSchema(sql.FieldIn(FieldUUID, vs...))
+}
+
+// UUIDNotIn applies the NotIn predicate on the "uuid" field.
+func UUIDNotIn(vs ...uuid.UUID) predicate.UserSchema {
+	return predicate.UserSchema(sql.FieldNotIn(FieldUUID, vs...))
+}
+
+// UUIDGT applies the GT predicate on the "uuid" field.
+func UUIDGT(v uuid.UUID) predicate.UserSchema {
+	return predicate.UserSchema(sql.FieldGT(FieldUUID, v))
+}
+
+// UUIDGTE applies the GTE predicate on the "uuid" field.
+func UUIDGTE(v uuid.UUID) predicate.UserSchema {
+	return predicate.UserSchema(sql.FieldGTE(FieldUUID, v))
+}
+
+// UUIDLT applies the LT predicate on the "uuid" field.
+func UUIDLT(v uuid.UUID) predicate.UserSchema {
+	return predicate.UserSchema(sql.FieldLT(FieldUUID, v))
+}
+
+// UUIDLTE applies the LTE predicate on the "uuid" field.
+func UUIDLTE(v uuid.UUID) predicate.UserSchema {
+	return predicate.UserSchema(sql.FieldLTE(FieldUUID, v))
 }
 
 // UsernameEQ applies the EQ predicate on the "username" field.
@@ -261,6 +319,224 @@ func EmailEqualFold(v string) predicate.UserSchema {
 // EmailContainsFold applies the ContainsFold predicate on the "email" field.
 func EmailContainsFold(v string) predicate.UserSchema {
 	return predicate.UserSchema(sql.FieldContainsFold(FieldEmail, v))
+}
+
+// CreatedAtEQ applies the EQ predicate on the "createdAt" field.
+func CreatedAtEQ(v time.Time) predicate.UserSchema {
+	return predicate.UserSchema(sql.FieldEQ(FieldCreatedAt, v))
+}
+
+// CreatedAtNEQ applies the NEQ predicate on the "createdAt" field.
+func CreatedAtNEQ(v time.Time) predicate.UserSchema {
+	return predicate.UserSchema(sql.FieldNEQ(FieldCreatedAt, v))
+}
+
+// CreatedAtIn applies the In predicate on the "createdAt" field.
+func CreatedAtIn(vs ...time.Time) predicate.UserSchema {
+	return predicate.UserSchema(sql.FieldIn(FieldCreatedAt, vs...))
+}
+
+// CreatedAtNotIn applies the NotIn predicate on the "createdAt" field.
+func CreatedAtNotIn(vs ...time.Time) predicate.UserSchema {
+	return predicate.UserSchema(sql.FieldNotIn(FieldCreatedAt, vs...))
+}
+
+// CreatedAtGT applies the GT predicate on the "createdAt" field.
+func CreatedAtGT(v time.Time) predicate.UserSchema {
+	return predicate.UserSchema(sql.FieldGT(FieldCreatedAt, v))
+}
+
+// CreatedAtGTE applies the GTE predicate on the "createdAt" field.
+func CreatedAtGTE(v time.Time) predicate.UserSchema {
+	return predicate.UserSchema(sql.FieldGTE(FieldCreatedAt, v))
+}
+
+// CreatedAtLT applies the LT predicate on the "createdAt" field.
+func CreatedAtLT(v time.Time) predicate.UserSchema {
+	return predicate.UserSchema(sql.FieldLT(FieldCreatedAt, v))
+}
+
+// CreatedAtLTE applies the LTE predicate on the "createdAt" field.
+func CreatedAtLTE(v time.Time) predicate.UserSchema {
+	return predicate.UserSchema(sql.FieldLTE(FieldCreatedAt, v))
+}
+
+// UpdatedAtEQ applies the EQ predicate on the "updatedAt" field.
+func UpdatedAtEQ(v time.Time) predicate.UserSchema {
+	return predicate.UserSchema(sql.FieldEQ(FieldUpdatedAt, v))
+}
+
+// UpdatedAtNEQ applies the NEQ predicate on the "updatedAt" field.
+func UpdatedAtNEQ(v time.Time) predicate.UserSchema {
+	return predicate.UserSchema(sql.FieldNEQ(FieldUpdatedAt, v))
+}
+
+// UpdatedAtIn applies the In predicate on the "updatedAt" field.
+func UpdatedAtIn(vs ...time.Time) predicate.UserSchema {
+	return predicate.UserSchema(sql.FieldIn(FieldUpdatedAt, vs...))
+}
+
+// UpdatedAtNotIn applies the NotIn predicate on the "updatedAt" field.
+func UpdatedAtNotIn(vs ...time.Time) predicate.UserSchema {
+	return predicate.UserSchema(sql.FieldNotIn(FieldUpdatedAt, vs...))
+}
+
+// UpdatedAtGT applies the GT predicate on the "updatedAt" field.
+func UpdatedAtGT(v time.Time) predicate.UserSchema {
+	return predicate.UserSchema(sql.FieldGT(FieldUpdatedAt, v))
+}
+
+// UpdatedAtGTE applies the GTE predicate on the "updatedAt" field.
+func UpdatedAtGTE(v time.Time) predicate.UserSchema {
+	return predicate.UserSchema(sql.FieldGTE(FieldUpdatedAt, v))
+}
+
+// UpdatedAtLT applies the LT predicate on the "updatedAt" field.
+func UpdatedAtLT(v time.Time) predicate.UserSchema {
+	return predicate.UserSchema(sql.FieldLT(FieldUpdatedAt, v))
+}
+
+// UpdatedAtLTE applies the LTE predicate on the "updatedAt" field.
+func UpdatedAtLTE(v time.Time) predicate.UserSchema {
+	return predicate.UserSchema(sql.FieldLTE(FieldUpdatedAt, v))
+}
+
+// HasRoles applies the HasEdge predicate on the "roles" edge.
+func HasRoles() predicate.UserSchema {
+	return predicate.UserSchema(func(s *sql.Selector) {
+		step := sqlgraph.NewStep(
+			sqlgraph.From(Table, FieldID),
+			sqlgraph.Edge(sqlgraph.O2M, false, RolesTable, RolesColumn),
+		)
+		sqlgraph.HasNeighbors(s, step)
+	})
+}
+
+// HasRolesWith applies the HasEdge predicate on the "roles" edge with a given conditions (other predicates).
+func HasRolesWith(preds ...predicate.RoleSchema) predicate.UserSchema {
+	return predicate.UserSchema(func(s *sql.Selector) {
+		step := newRolesStep()
+		sqlgraph.HasNeighborsWith(s, step, func(s *sql.Selector) {
+			for _, p := range preds {
+				p(s)
+			}
+		})
+	})
+}
+
+// HasProfile applies the HasEdge predicate on the "profile" edge.
+func HasProfile() predicate.UserSchema {
+	return predicate.UserSchema(func(s *sql.Selector) {
+		step := sqlgraph.NewStep(
+			sqlgraph.From(Table, FieldID),
+			sqlgraph.Edge(sqlgraph.O2O, false, ProfileTable, ProfileColumn),
+		)
+		sqlgraph.HasNeighbors(s, step)
+	})
+}
+
+// HasProfileWith applies the HasEdge predicate on the "profile" edge with a given conditions (other predicates).
+func HasProfileWith(preds ...predicate.ProfileSchema) predicate.UserSchema {
+	return predicate.UserSchema(func(s *sql.Selector) {
+		step := newProfileStep()
+		sqlgraph.HasNeighborsWith(s, step, func(s *sql.Selector) {
+			for _, p := range preds {
+				p(s)
+			}
+		})
+	})
+}
+
+// HasFollow applies the HasEdge predicate on the "follow" edge.
+func HasFollow() predicate.UserSchema {
+	return predicate.UserSchema(func(s *sql.Selector) {
+		step := sqlgraph.NewStep(
+			sqlgraph.From(Table, FieldID),
+			sqlgraph.Edge(sqlgraph.M2O, false, FollowTable, FollowColumn),
+		)
+		sqlgraph.HasNeighbors(s, step)
+	})
+}
+
+// HasFollowWith applies the HasEdge predicate on the "follow" edge with a given conditions (other predicates).
+func HasFollowWith(preds ...predicate.FollowSchema) predicate.UserSchema {
+	return predicate.UserSchema(func(s *sql.Selector) {
+		step := newFollowStep()
+		sqlgraph.HasNeighborsWith(s, step, func(s *sql.Selector) {
+			for _, p := range preds {
+				p(s)
+			}
+		})
+	})
+}
+
+// HasReferrer applies the HasEdge predicate on the "referrer" edge.
+func HasReferrer() predicate.UserSchema {
+	return predicate.UserSchema(func(s *sql.Selector) {
+		step := sqlgraph.NewStep(
+			sqlgraph.From(Table, FieldID),
+			sqlgraph.Edge(sqlgraph.O2O, false, ReferrerTable, ReferrerColumn),
+		)
+		sqlgraph.HasNeighbors(s, step)
+	})
+}
+
+// HasReferrerWith applies the HasEdge predicate on the "referrer" edge with a given conditions (other predicates).
+func HasReferrerWith(preds ...predicate.ReferrerSchema) predicate.UserSchema {
+	return predicate.UserSchema(func(s *sql.Selector) {
+		step := newReferrerStep()
+		sqlgraph.HasNeighborsWith(s, step, func(s *sql.Selector) {
+			for _, p := range preds {
+				p(s)
+			}
+		})
+	})
+}
+
+// HasPersonalization applies the HasEdge predicate on the "personalization" edge.
+func HasPersonalization() predicate.UserSchema {
+	return predicate.UserSchema(func(s *sql.Selector) {
+		step := sqlgraph.NewStep(
+			sqlgraph.From(Table, FieldID),
+			sqlgraph.Edge(sqlgraph.O2O, false, PersonalizationTable, PersonalizationColumn),
+		)
+		sqlgraph.HasNeighbors(s, step)
+	})
+}
+
+// HasPersonalizationWith applies the HasEdge predicate on the "personalization" edge with a given conditions (other predicates).
+func HasPersonalizationWith(preds ...predicate.PersonalizationSchema) predicate.UserSchema {
+	return predicate.UserSchema(func(s *sql.Selector) {
+		step := newPersonalizationStep()
+		sqlgraph.HasNeighborsWith(s, step, func(s *sql.Selector) {
+			for _, p := range preds {
+				p(s)
+			}
+		})
+	})
+}
+
+// HasNamecard applies the HasEdge predicate on the "namecard" edge.
+func HasNamecard() predicate.UserSchema {
+	return predicate.UserSchema(func(s *sql.Selector) {
+		step := sqlgraph.NewStep(
+			sqlgraph.From(Table, FieldID),
+			sqlgraph.Edge(sqlgraph.O2O, false, NamecardTable, NamecardColumn),
+		)
+		sqlgraph.HasNeighbors(s, step)
+	})
+}
+
+// HasNamecardWith applies the HasEdge predicate on the "namecard" edge with a given conditions (other predicates).
+func HasNamecardWith(preds ...predicate.NamecardSchema) predicate.UserSchema {
+	return predicate.UserSchema(func(s *sql.Selector) {
+		step := newNamecardStep()
+		sqlgraph.HasNeighborsWith(s, step, func(s *sql.Selector) {
+			for _, p := range preds {
+				p(s)
+			}
+		})
+	})
 }
 
 // And groups predicates with the AND operator between them.

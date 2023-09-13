@@ -1,15 +1,14 @@
 package entity
 
 import (
-	port "iam/internal/user/port"
-	"iam/libs/security"
 	"log"
+	"persona/internal/user/port"
+	"persona/libs/security"
 	"time"
 )
 
 type User struct {
 	ID        uint
-	Version   uint
 	Username  string
 	Password  string
 	Email     string

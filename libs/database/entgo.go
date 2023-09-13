@@ -3,14 +3,14 @@ package database
 import (
 	"context"
 	_ "github.com/lib/pq"
-	"iam/libs/database/ent"
 	"log"
+	"persona/libs/database/ent"
 )
 
 var Client *ent.Client
 
 func InitializeDatabase() {
-	client, err := ent.Open("postgres", "host=localhost user=postgres dbname=iam_db sslmode=disable password=root")
+	client, err := ent.Open("postgres", "host=localhost user=postgres dbname=persona_db sslmode=disable password=root")
 	if err != nil {
 		log.Fatalf("failed opening connection to postgres: %v", err)
 	}

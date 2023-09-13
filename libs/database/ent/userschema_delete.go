@@ -4,8 +4,8 @@ package ent
 
 import (
 	"context"
-	"iam/libs/database/ent/predicate"
-	"iam/libs/database/ent/userschema"
+	"persona/libs/database/ent/predicate"
+	"persona/libs/database/ent/userschema"
 
 	"entgo.io/ent/dialect/sql"
 	"entgo.io/ent/dialect/sql/sqlgraph"

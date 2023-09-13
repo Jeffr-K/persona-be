@@ -6,7 +6,38 @@ import (
 	"context"
 	"errors"
 	"fmt"
-	"iam/libs/database/ent/userschema"
+	"persona/libs/database/ent/applicationschema"
+	"persona/libs/database/ent/assignmentschema"
+	"persona/libs/database/ent/badgeschema"
+	"persona/libs/database/ent/bookmarkschema"
+	"persona/libs/database/ent/commentschema"
+	"persona/libs/database/ent/companyschema"
+	"persona/libs/database/ent/coverletterschema"
+	"persona/libs/database/ent/experienceschema"
+	"persona/libs/database/ent/followschema"
+	"persona/libs/database/ent/imageschema"
+	"persona/libs/database/ent/jobschema"
+	"persona/libs/database/ent/leetcodeschema"
+	"persona/libs/database/ent/likeschema"
+	"persona/libs/database/ent/locationschema"
+	"persona/libs/database/ent/logoschema"
+	"persona/libs/database/ent/namecardschema"
+	"persona/libs/database/ent/notificationschema"
+	"persona/libs/database/ent/paymentschema"
+	"persona/libs/database/ent/personalizationschema"
+	"persona/libs/database/ent/phoneschema"
+	"persona/libs/database/ent/photoschema"
+	"persona/libs/database/ent/poolschema"
+	"persona/libs/database/ent/portfolioschema"
+	"persona/libs/database/ent/positionschema"
+	"persona/libs/database/ent/profileschema"
+	"persona/libs/database/ent/referrerschema"
+	"persona/libs/database/ent/resumeschema"
+	"persona/libs/database/ent/roleschema"
+	"persona/libs/database/ent/skillschema"
+	"persona/libs/database/ent/subscribeschema"
+	"persona/libs/database/ent/threadschema"
+	"persona/libs/database/ent/userschema"
 	"reflect"
 	"sync"
 
@@ -73,7 +104,38 @@ var (
 func checkColumn(table, column string) error {
 	initCheck.Do(func() {
 		columnCheck = sql.NewColumnCheck(map[string]func(string) bool{
-			userschema.Table: userschema.ValidColumn,
+			applicationschema.Table:     applicationschema.ValidColumn,
+			assignmentschema.Table:      assignmentschema.ValidColumn,
+			badgeschema.Table:           badgeschema.ValidColumn,
+			bookmarkschema.Table:        bookmarkschema.ValidColumn,
+			commentschema.Table:         commentschema.ValidColumn,
+			companyschema.Table:         companyschema.ValidColumn,
+			coverletterschema.Table:     coverletterschema.ValidColumn,
+			experienceschema.Table:      experienceschema.ValidColumn,
+			followschema.Table:          followschema.ValidColumn,
+			imageschema.Table:           imageschema.ValidColumn,
+			jobschema.Table:             jobschema.ValidColumn,
+			leetcodeschema.Table:        leetcodeschema.ValidColumn,
+			likeschema.Table:            likeschema.ValidColumn,
+			locationschema.Table:        locationschema.ValidColumn,
+			logoschema.Table:            logoschema.ValidColumn,
+			namecardschema.Table:        namecardschema.ValidColumn,
+			notificationschema.Table:    notificationschema.ValidColumn,
+			paymentschema.Table:         paymentschema.ValidColumn,
+			personalizationschema.Table: personalizationschema.ValidColumn,
+			phoneschema.Table:           phoneschema.ValidColumn,
+			photoschema.Table:           photoschema.ValidColumn,
+			poolschema.Table:            poolschema.ValidColumn,
+			portfolioschema.Table:       portfolioschema.ValidColumn,
+			positionschema.Table:        positionschema.ValidColumn,
+			profileschema.Table:         profileschema.ValidColumn,
+			referrerschema.Table:        referrerschema.ValidColumn,
+			resumeschema.Table:          resumeschema.ValidColumn,
+			roleschema.Table:            roleschema.ValidColumn,
+			skillschema.Table:           skillschema.ValidColumn,
+			subscribeschema.Table:       subscribeschema.ValidColumn,
+			threadschema.Table:          threadschema.ValidColumn,
+			userschema.Table:            userschema.ValidColumn,
 		})
 	})
 	return columnCheck(table, column)

@@ -3,11 +3,10 @@ package config
 import (
 	"github.com/labstack/echo/v4"
 	"github.com/labstack/echo/v4/middleware"
-	"iam/internal/user/controller"
-	presentor "iam/internal/user/route"
-	"iam/libs/database"
-	"iam/libs/database/redis"
-	"iam/libs/queue"
+	"persona/internal/user/controller"
+	presentor "persona/internal/user/route"
+	"persona/libs/database"
+	"persona/libs/database/redis"
 )
 
 type Application struct{}
@@ -15,10 +14,9 @@ type Application struct{}
 func (app Application) BootStrap(echo *echo.Echo) {
 	app.registerRouter(echo)
 	app.registerMiddleware(echo)
-	//database.InitializedPostgreSQL()
 	database.InitializeDatabase()
 	redis.InitializeRedis()
-	queue.InitializeKafka()
+	//queue.InitializeKafka()
 }
 
 func (app Application) registerRouter(server *echo.Echo) {

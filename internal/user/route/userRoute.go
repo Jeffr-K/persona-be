@@ -2,7 +2,7 @@ package presentor
 
 import (
 	"github.com/labstack/echo/v4"
-	"iam/internal/user/controller"
+	"persona/internal/user/controller"
 )
 
 type UserRoutes struct {
@@ -20,7 +20,4 @@ func (u UserRoutes) InitializeRoutes(route *echo.Echo) {
 
 	user.POST("/registration", u.userController.Register)
 	user.DELETE("/dropdown", u.userController.Dropdown)
-	user.GET("/search/:id", u.userController.Search)
-	user.GET("/search/list", u.userController.List)
-	user.PUT("/profile", u.userController.Modify)
 }

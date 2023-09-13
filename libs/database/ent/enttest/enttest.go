@@ -4,11 +4,11 @@ package enttest
 
 import (
 	"context"
-	"iam/libs/database/ent"
+	"persona/libs/database/ent"
 	// required by schema hooks.
-	_ "iam/libs/database/ent/runtime"
+	_ "persona/libs/database/ent/runtime"
 
-	"iam/libs/database/ent/migrate"
+	"persona/libs/database/ent/migrate"
 
 	"entgo.io/ent/dialect/sql/schema"
 )

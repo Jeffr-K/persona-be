@@ -2,7 +2,7 @@ package presentor
 
 import (
 	"github.com/labstack/echo/v4"
-	"iam/internal/user/controller"
+	"persona/internal/user/controller"
 )
 
 type AuthRoutes struct {

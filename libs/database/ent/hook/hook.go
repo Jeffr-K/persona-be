@@ -5,8 +5,380 @@ package hook
 import (
 	"context"
 	"fmt"
-	"iam/libs/database/ent"
+	"persona/libs/database/ent"
 )
+
+// The ApplicationSchemaFunc type is an adapter to allow the use of ordinary
+// function as ApplicationSchema mutator.
+type ApplicationSchemaFunc func(context.Context, *ent.ApplicationSchemaMutation) (ent.Value, error)
+
+// Mutate calls f(ctx, m).
+func (f ApplicationSchemaFunc) Mutate(ctx context.Context, m ent.Mutation) (ent.Value, error) {
+	if mv, ok := m.(*ent.ApplicationSchemaMutation); ok {
+		return f(ctx, mv)
+	}
+	return nil, fmt.Errorf("unexpected mutation type %T. expect *ent.ApplicationSchemaMutation", m)
+}
+
+// The AssignmentSchemaFunc type is an adapter to allow the use of ordinary
+// function as AssignmentSchema mutator.
+type AssignmentSchemaFunc func(context.Context, *ent.AssignmentSchemaMutation) (ent.Value, error)
+
+// Mutate calls f(ctx, m).
+func (f AssignmentSchemaFunc) Mutate(ctx context.Context, m ent.Mutation) (ent.Value, error) {
+	if mv, ok := m.(*ent.AssignmentSchemaMutation); ok {
+		return f(ctx, mv)
+	}
+	return nil, fmt.Errorf("unexpected mutation type %T. expect *ent.AssignmentSchemaMutation", m)
+}
+
+// The BadgeSchemaFunc type is an adapter to allow the use of ordinary
+// function as BadgeSchema mutator.
+type BadgeSchemaFunc func(context.Context, *ent.BadgeSchemaMutation) (ent.Value, error)
+
+// Mutate calls f(ctx, m).
+func (f BadgeSchemaFunc) Mutate(ctx context.Context, m ent.Mutation) (ent.Value, error) {
+	if mv, ok := m.(*ent.BadgeSchemaMutation); ok {
+		return f(ctx, mv)
+	}
+	return nil, fmt.Errorf("unexpected mutation type %T. expect *ent.BadgeSchemaMutation", m)
+}
+
+// The BookmarkSchemaFunc type is an adapter to allow the use of ordinary
+// function as BookmarkSchema mutator.
+type BookmarkSchemaFunc func(context.Context, *ent.BookmarkSchemaMutation) (ent.Value, error)
+
+// Mutate calls f(ctx, m).
+func (f BookmarkSchemaFunc) Mutate(ctx context.Context, m ent.Mutation) (ent.Value, error) {
+	if mv, ok := m.(*ent.BookmarkSchemaMutation); ok {
+		return f(ctx, mv)
+	}
+	return nil, fmt.Errorf("unexpected mutation type %T. expect *ent.BookmarkSchemaMutation", m)
+}
+
+// The CommentSchemaFunc type is an adapter to allow the use of ordinary
+// function as CommentSchema mutator.
+type CommentSchemaFunc func(context.Context, *ent.CommentSchemaMutation) (ent.Value, error)
+
+// Mutate calls f(ctx, m).
+func (f CommentSchemaFunc) Mutate(ctx context.Context, m ent.Mutation) (ent.Value, error) {
+	if mv, ok := m.(*ent.CommentSchemaMutation); ok {
+		return f(ctx, mv)
+	}
+	return nil, fmt.Errorf("unexpected mutation type %T. expect *ent.CommentSchemaMutation", m)
+}
+
+// The CompanySchemaFunc type is an adapter to allow the use of ordinary
+// function as CompanySchema mutator.
+type CompanySchemaFunc func(context.Context, *ent.CompanySchemaMutation) (ent.Value, error)
+
+// Mutate calls f(ctx, m).
+func (f CompanySchemaFunc) Mutate(ctx context.Context, m ent.Mutation) (ent.Value, error) {
+	if mv, ok := m.(*ent.CompanySchemaMutation); ok {
+		return f(ctx, mv)
+	}
+	return nil, fmt.Errorf("unexpected mutation type %T. expect *ent.CompanySchemaMutation", m)
+}
+
+// The CoverLetterSchemaFunc type is an adapter to allow the use of ordinary
+// function as CoverLetterSchema mutator.
+type CoverLetterSchemaFunc func(context.Context, *ent.CoverLetterSchemaMutation) (ent.Value, error)
+
+// Mutate calls f(ctx, m).
+func (f CoverLetterSchemaFunc) Mutate(ctx context.Context, m ent.Mutation) (ent.Value, error) {
+	if mv, ok := m.(*ent.CoverLetterSchemaMutation); ok {
+		return f(ctx, mv)
+	}
+	return nil, fmt.Errorf("unexpected mutation type %T. expect *ent.CoverLetterSchemaMutation", m)
+}
+
+// The ExperienceSchemaFunc type is an adapter to allow the use of ordinary
+// function as ExperienceSchema mutator.
+type ExperienceSchemaFunc func(context.Context, *ent.ExperienceSchemaMutation) (ent.Value, error)
+
+// Mutate calls f(ctx, m).
+func (f ExperienceSchemaFunc) Mutate(ctx context.Context, m ent.Mutation) (ent.Value, error) {
+	if mv, ok := m.(*ent.ExperienceSchemaMutation); ok {
+		return f(ctx, mv)
+	}
+	return nil, fmt.Errorf("unexpected mutation type %T. expect *ent.ExperienceSchemaMutation", m)
+}
+
+// The FollowSchemaFunc type is an adapter to allow the use of ordinary
+// function as FollowSchema mutator.
+type FollowSchemaFunc func(context.Context, *ent.FollowSchemaMutation) (ent.Value, error)
+
+// Mutate calls f(ctx, m).
+func (f FollowSchemaFunc) Mutate(ctx context.Context, m ent.Mutation) (ent.Value, error) {
+	if mv, ok := m.(*ent.FollowSchemaMutation); ok {
+		return f(ctx, mv)
+	}
+	return nil, fmt.Errorf("unexpected mutation type %T. expect *ent.FollowSchemaMutation", m)
+}
+
+// The ImageSchemaFunc type is an adapter to allow the use of ordinary
+// function as ImageSchema mutator.
+type ImageSchemaFunc func(context.Context, *ent.ImageSchemaMutation) (ent.Value, error)
+
+// Mutate calls f(ctx, m).
+func (f ImageSchemaFunc) Mutate(ctx context.Context, m ent.Mutation) (ent.Value, error) {
+	if mv, ok := m.(*ent.ImageSchemaMutation); ok {
+		return f(ctx, mv)
+	}
+	return nil, fmt.Errorf("unexpected mutation type %T. expect *ent.ImageSchemaMutation", m)
+}
+
+// The JobSchemaFunc type is an adapter to allow the use of ordinary
+// function as JobSchema mutator.
+type JobSchemaFunc func(context.Context, *ent.JobSchemaMutation) (ent.Value, error)
+
+// Mutate calls f(ctx, m).
+func (f JobSchemaFunc) Mutate(ctx context.Context, m ent.Mutation) (ent.Value, error) {
+	if mv, ok := m.(*ent.JobSchemaMutation); ok {
+		return f(ctx, mv)
+	}
+	return nil, fmt.Errorf("unexpected mutation type %T. expect *ent.JobSchemaMutation", m)
+}
+
+// The LeetcodeSchemaFunc type is an adapter to allow the use of ordinary
+// function as LeetcodeSchema mutator.
+type LeetcodeSchemaFunc func(context.Context, *ent.LeetcodeSchemaMutation) (ent.Value, error)
+
+// Mutate calls f(ctx, m).
+func (f LeetcodeSchemaFunc) Mutate(ctx context.Context, m ent.Mutation) (ent.Value, error) {
+	if mv, ok := m.(*ent.LeetcodeSchemaMutation); ok {
+		return f(ctx, mv)
+	}
+	return nil, fmt.Errorf("unexpected mutation type %T. expect *ent.LeetcodeSchemaMutation", m)
+}
+
+// The LikeSchemaFunc type is an adapter to allow the use of ordinary
+// function as LikeSchema mutator.
+type LikeSchemaFunc func(context.Context, *ent.LikeSchemaMutation) (ent.Value, error)
+
+// Mutate calls f(ctx, m).
+func (f LikeSchemaFunc) Mutate(ctx context.Context, m ent.Mutation) (ent.Value, error) {
+	if mv, ok := m.(*ent.LikeSchemaMutation); ok {
+		return f(ctx, mv)
+	}
+	return nil, fmt.Errorf("unexpected mutation type %T. expect *ent.LikeSchemaMutation", m)
+}
+
+// The LocationSchemaFunc type is an adapter to allow the use of ordinary
+// function as LocationSchema mutator.
+type LocationSchemaFunc func(context.Context, *ent.LocationSchemaMutation) (ent.Value, error)
+
+// Mutate calls f(ctx, m).
+func (f LocationSchemaFunc) Mutate(ctx context.Context, m ent.Mutation) (ent.Value, error) {
+	if mv, ok := m.(*ent.LocationSchemaMutation); ok {
+		return f(ctx, mv)
+	}
+	return nil, fmt.Errorf("unexpected mutation type %T. expect *ent.LocationSchemaMutation", m)
+}
+
+// The LogoSchemaFunc type is an adapter to allow the use of ordinary
+// function as LogoSchema mutator.
+type LogoSchemaFunc func(context.Context, *ent.LogoSchemaMutation) (ent.Value, error)
+
+// Mutate calls f(ctx, m).
+func (f LogoSchemaFunc) Mutate(ctx context.Context, m ent.Mutation) (ent.Value, error) {
+	if mv, ok := m.(*ent.LogoSchemaMutation); ok {
+		return f(ctx, mv)
+	}
+	return nil, fmt.Errorf("unexpected mutation type %T. expect *ent.LogoSchemaMutation", m)
+}
+
+// The NamecardSchemaFunc type is an adapter to allow the use of ordinary
+// function as NamecardSchema mutator.
+type NamecardSchemaFunc func(context.Context, *ent.NamecardSchemaMutation) (ent.Value, error)
+
+// Mutate calls f(ctx, m).
+func (f NamecardSchemaFunc) Mutate(ctx context.Context, m ent.Mutation) (ent.Value, error) {
+	if mv, ok := m.(*ent.NamecardSchemaMutation); ok {
+		return f(ctx, mv)
+	}
+	return nil, fmt.Errorf("unexpected mutation type %T. expect *ent.NamecardSchemaMutation", m)
+}
+
+// The NotificationSchemaFunc type is an adapter to allow the use of ordinary
+// function as NotificationSchema mutator.
+type NotificationSchemaFunc func(context.Context, *ent.NotificationSchemaMutation) (ent.Value, error)
+
+// Mutate calls f(ctx, m).
+func (f NotificationSchemaFunc) Mutate(ctx context.Context, m ent.Mutation) (ent.Value, error) {
+	if mv, ok := m.(*ent.NotificationSchemaMutation); ok {
+		return f(ctx, mv)
+	}
+	return nil, fmt.Errorf("unexpected mutation type %T. expect *ent.NotificationSchemaMutation", m)
+}
+
+// The PaymentSchemaFunc type is an adapter to allow the use of ordinary
+// function as PaymentSchema mutator.
+type PaymentSchemaFunc func(context.Context, *ent.PaymentSchemaMutation) (ent.Value, error)
+
+// Mutate calls f(ctx, m).
+func (f PaymentSchemaFunc) Mutate(ctx context.Context, m ent.Mutation) (ent.Value, error) {
+	if mv, ok := m.(*ent.PaymentSchemaMutation); ok {
+		return f(ctx, mv)
+	}
+	return nil, fmt.Errorf("unexpected mutation type %T. expect *ent.PaymentSchemaMutation", m)
+}
+
+// The PersonalizationSchemaFunc type is an adapter to allow the use of ordinary
+// function as PersonalizationSchema mutator.
+type PersonalizationSchemaFunc func(context.Context, *ent.PersonalizationSchemaMutation) (ent.Value, error)
+
+// Mutate calls f(ctx, m).
+func (f PersonalizationSchemaFunc) Mutate(ctx context.Context, m ent.Mutation) (ent.Value, error) {
+	if mv, ok := m.(*ent.PersonalizationSchemaMutation); ok {
+		return f(ctx, mv)
+	}
+	return nil, fmt.Errorf("unexpected mutation type %T. expect *ent.PersonalizationSchemaMutation", m)
+}
+
+// The PhoneSchemaFunc type is an adapter to allow the use of ordinary
+// function as PhoneSchema mutator.
+type PhoneSchemaFunc func(context.Context, *ent.PhoneSchemaMutation) (ent.Value, error)
+
+// Mutate calls f(ctx, m).
+func (f PhoneSchemaFunc) Mutate(ctx context.Context, m ent.Mutation) (ent.Value, error) {
+	if mv, ok := m.(*ent.PhoneSchemaMutation); ok {
+		return f(ctx, mv)
+	}
+	return nil, fmt.Errorf("unexpected mutation type %T. expect *ent.PhoneSchemaMutation", m)
+}
+
+// The PhotoSchemaFunc type is an adapter to allow the use of ordinary
+// function as PhotoSchema mutator.
+type PhotoSchemaFunc func(context.Context, *ent.PhotoSchemaMutation) (ent.Value, error)
+
+// Mutate calls f(ctx, m).
+func (f PhotoSchemaFunc) Mutate(ctx context.Context, m ent.Mutation) (ent.Value, error) {
+	if mv, ok := m.(*ent.PhotoSchemaMutation); ok {
+		return f(ctx, mv)
+	}
+	return nil, fmt.Errorf("unexpected mutation type %T. expect *ent.PhotoSchemaMutation", m)
+}
+
+// The PoolSchemaFunc type is an adapter to allow the use of ordinary
+// function as PoolSchema mutator.
+type PoolSchemaFunc func(context.Context, *ent.PoolSchemaMutation) (ent.Value, error)
+
+// Mutate calls f(ctx, m).
+func (f PoolSchemaFunc) Mutate(ctx context.Context, m ent.Mutation) (ent.Value, error) {
+	if mv, ok := m.(*ent.PoolSchemaMutation); ok {
+		return f(ctx, mv)
+	}
+	return nil, fmt.Errorf("unexpected mutation type %T. expect *ent.PoolSchemaMutation", m)
+}
+
+// The PortfolioSchemaFunc type is an adapter to allow the use of ordinary
+// function as PortfolioSchema mutator.
+type PortfolioSchemaFunc func(context.Context, *ent.PortfolioSchemaMutation) (ent.Value, error)
+
+// Mutate calls f(ctx, m).
+func (f PortfolioSchemaFunc) Mutate(ctx context.Context, m ent.Mutation) (ent.Value, error) {
+	if mv, ok := m.(*ent.PortfolioSchemaMutation); ok {
+		return f(ctx, mv)
+	}
+	return nil, fmt.Errorf("unexpected mutation type %T. expect *ent.PortfolioSchemaMutation", m)
+}
+
+// The PositionSchemaFunc type is an adapter to allow the use of ordinary
+// function as PositionSchema mutator.
+type PositionSchemaFunc func(context.Context, *ent.PositionSchemaMutation) (ent.Value, error)
+
+// Mutate calls f(ctx, m).
+func (f PositionSchemaFunc) Mutate(ctx context.Context, m ent.Mutation) (ent.Value, error) {
+	if mv, ok := m.(*ent.PositionSchemaMutation); ok {
+		return f(ctx, mv)
+	}
+	return nil, fmt.Errorf("unexpected mutation type %T. expect *ent.PositionSchemaMutation", m)
+}
+
+// The ProfileSchemaFunc type is an adapter to allow the use of ordinary
+// function as ProfileSchema mutator.
+type ProfileSchemaFunc func(context.Context, *ent.ProfileSchemaMutation) (ent.Value, error)
+
+// Mutate calls f(ctx, m).
+func (f ProfileSchemaFunc) Mutate(ctx context.Context, m ent.Mutation) (ent.Value, error) {
+	if mv, ok := m.(*ent.ProfileSchemaMutation); ok {
+		return f(ctx, mv)
+	}
+	return nil, fmt.Errorf("unexpected mutation type %T. expect *ent.ProfileSchemaMutation", m)
+}
+
+// The ReferrerSchemaFunc type is an adapter to allow the use of ordinary
+// function as ReferrerSchema mutator.
+type ReferrerSchemaFunc func(context.Context, *ent.ReferrerSchemaMutation) (ent.Value, error)
+
+// Mutate calls f(ctx, m).
+func (f ReferrerSchemaFunc) Mutate(ctx context.Context, m ent.Mutation) (ent.Value, error) {
+	if mv, ok := m.(*ent.ReferrerSchemaMutation); ok {
+		return f(ctx, mv)
+	}
+	return nil, fmt.Errorf("unexpected mutation type %T. expect *ent.ReferrerSchemaMutation", m)
+}
+
+// The ResumeSchemaFunc type is an adapter to allow the use of ordinary
+// function as ResumeSchema mutator.
+type ResumeSchemaFunc func(context.Context, *ent.ResumeSchemaMutation) (ent.Value, error)
+
+// Mutate calls f(ctx, m).
+func (f ResumeSchemaFunc) Mutate(ctx context.Context, m ent.Mutation) (ent.Value, error) {
+	if mv, ok := m.(*ent.ResumeSchemaMutation); ok {
+		return f(ctx, mv)
+	}
+	return nil, fmt.Errorf("unexpected mutation type %T. expect *ent.ResumeSchemaMutation", m)
+}
+
+// The RoleSchemaFunc type is an adapter to allow the use of ordinary
+// function as RoleSchema mutator.
+type RoleSchemaFunc func(context.Context, *ent.RoleSchemaMutation) (ent.Value, error)
+
+// Mutate calls f(ctx, m).
+func (f RoleSchemaFunc) Mutate(ctx context.Context, m ent.Mutation) (ent.Value, error) {
+	if mv, ok := m.(*ent.RoleSchemaMutation); ok {
+		return f(ctx, mv)
+	}
+	return nil, fmt.Errorf("unexpected mutation type %T. expect *ent.RoleSchemaMutation", m)
+}
+
+// The SkillSchemaFunc type is an adapter to allow the use of ordinary
+// function as SkillSchema mutator.
+type SkillSchemaFunc func(context.Context, *ent.SkillSchemaMutation) (ent.Value, error)
+
+// Mutate calls f(ctx, m).
+func (f SkillSchemaFunc) Mutate(ctx context.Context, m ent.Mutation) (ent.Value, error) {
+	if mv, ok := m.(*ent.SkillSchemaMutation); ok {
+		return f(ctx, mv)
+	}
+	return nil, fmt.Errorf("unexpected mutation type %T. expect *ent.SkillSchemaMutation", m)
+}
+
+// The SubscribeSchemaFunc type is an adapter to allow the use of ordinary
+// function as SubscribeSchema mutator.
+type SubscribeSchemaFunc func(context.Context, *ent.SubscribeSchemaMutation) (ent.Value, error)
+
+// Mutate calls f(ctx, m).
+func (f SubscribeSchemaFunc) Mutate(ctx context.Context, m ent.Mutation) (ent.Value, error) {
+	if mv, ok := m.(*ent.SubscribeSchemaMutation); ok {
+		return f(ctx, mv)
+	}
+	return nil, fmt.Errorf("unexpected mutation type %T. expect *ent.SubscribeSchemaMutation", m)
+}
+
+// The ThreadSchemaFunc type is an adapter to allow the use of ordinary
+// function as ThreadSchema mutator.
+type ThreadSchemaFunc func(context.Context, *ent.ThreadSchemaMutation) (ent.Value, error)
+
+// Mutate calls f(ctx, m).
+func (f ThreadSchemaFunc) Mutate(ctx context.Context, m ent.Mutation) (ent.Value, error) {
+	if mv, ok := m.(*ent.ThreadSchemaMutation); ok {
+		return f(ctx, mv)
+	}
+	return nil, fmt.Errorf("unexpected mutation type %T. expect *ent.ThreadSchemaMutation", m)
+}
 
 // The UserSchemaFunc type is an adapter to allow the use of ordinary
 // function as UserSchema mutator.

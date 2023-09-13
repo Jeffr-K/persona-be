@@ -4,10 +4,17 @@ package ent
 
 import (
 	"context"
+	"database/sql/driver"
 	"fmt"
-	"iam/libs/database/ent/predicate"
-	"iam/libs/database/ent/userschema"
 	"math"
+	"persona/libs/database/ent/followschema"
+	"persona/libs/database/ent/namecardschema"
+	"persona/libs/database/ent/personalizationschema"
+	"persona/libs/database/ent/predicate"
+	"persona/libs/database/ent/profileschema"
+	"persona/libs/database/ent/referrerschema"
+	"persona/libs/database/ent/roleschema"
+	"persona/libs/database/ent/userschema"
 
 	"entgo.io/ent/dialect/sql"
 	"entgo.io/ent/dialect/sql/sqlgraph"
@@ -17,10 +24,17 @@ import (
 // UserSchemaQuery is the builder for querying UserSchema entities.
 type UserSchemaQuery struct {
 	config
-	ctx        *QueryContext
-	order      []userschema.OrderOption
-	inters     []Interceptor
-	predicates []predicate.UserSchema
+	ctx                 *QueryContext
+	order               []userschema.OrderOption
+	inters              []Interceptor
+	predicates          []predicate.UserSchema
+	withRoles           *RoleSchemaQuery
+	withProfile         *ProfileSchemaQuery
+	withFollow          *FollowSchemaQuery
+	withReferrer        *ReferrerSchemaQuery
+	withPersonalization *PersonalizationSchemaQuery
+	withNamecard        *NamecardSchemaQuery
+	withFKs             bool
 	// intermediate query (i.e. traversal path).
 	sql  *sql.Selector
 	path func(context.Context) (*sql.Selector, error)
@@ -55,6 +69,138 @@ func (usq *UserSchemaQuery) Unique(unique bool) *UserSchemaQuery {
 func (usq *UserSchemaQuery) Order(o ...userschema.OrderOption) *UserSchemaQuery {
 	usq.order = append(usq.order, o...)
 	return usq
+}
+
+// QueryRoles chains the current query on the "roles" edge.
+func (usq *UserSchemaQuery) QueryRoles() *RoleSchemaQuery {
+	query := (&RoleSchemaClient{config: usq.config}).Query()
+	query.path = func(ctx context.Context) (fromU *sql.Selector, err error) {
+		if err := usq.prepareQuery(ctx); err != nil {
+			return nil, err
+		}
+		selector := usq.sqlQuery(ctx)
+		if err := selector.Err(); err != nil {
+			return nil, err
+		}
+		step := sqlgraph.NewStep(
+			sqlgraph.From(userschema.Table, userschema.FieldID, selector),
+			sqlgraph.To(roleschema.Table, roleschema.FieldID),
+			sqlgraph.Edge(sqlgraph.O2M, false, userschema.RolesTable, userschema.RolesColumn),
+		)
+		fromU = sqlgraph.SetNeighbors(usq.driver.Dialect(), step)
+		return fromU, nil
+	}
+	return query
+}
+
+// QueryProfile chains the current query on the "profile" edge.
+func (usq *UserSchemaQuery) QueryProfile() *ProfileSchemaQuery {
+	query := (&ProfileSchemaClient{config: usq.config}).Query()
+	query.path = func(ctx context.Context) (fromU *sql.Selector, err error) {
+		if err := usq.prepareQuery(ctx); err != nil {
+			return nil, err
+		}
+		selector := usq.sqlQuery(ctx)
+		if err := selector.Err(); err != nil {
+			return nil, err
+		}
+		step := sqlgraph.NewStep(
+			sqlgraph.From(userschema.Table, userschema.FieldID, selector),
+			sqlgraph.To(profileschema.Table, profileschema.FieldID),
+			sqlgraph.Edge(sqlgraph.O2O, false, userschema.ProfileTable, userschema.ProfileColumn),
+		)
+		fromU = sqlgraph.SetNeighbors(usq.driver.Dialect(), step)
+		return fromU, nil
+	}
+	return query
+}
+
+// QueryFollow chains the current query on the "follow" edge.
+func (usq *UserSchemaQuery) QueryFollow() *FollowSchemaQuery {
+	query := (&FollowSchemaClient{config: usq.config}).Query()
+	query.path = func(ctx context.Context) (fromU *sql.Selector, err error) {
+		if err := usq.prepareQuery(ctx); err != nil {
+			return nil, err
+		}
+		selector := usq.sqlQuery(ctx)
+		if err := selector.Err(); err != nil {
+			return nil, err
+		}
+		step := sqlgraph.NewStep(
+			sqlgraph.From(userschema.Table, userschema.FieldID, selector),
+			sqlgraph.To(followschema.Table, followschema.FieldID),
+			sqlgraph.Edge(sqlgraph.M2O, false, userschema.FollowTable, userschema.FollowColumn),
+		)
+		fromU = sqlgraph.SetNeighbors(usq.driver.Dialect(), step)
+		return fromU, nil
+	}
+	return query
+}
+
+// QueryReferrer chains the current query on the "referrer" edge.
+func (usq *UserSchemaQuery) QueryReferrer() *ReferrerSchemaQuery {
+	query := (&ReferrerSchemaClient{config: usq.config}).Query()
+	query.path = func(ctx context.Context) (fromU *sql.Selector, err error) {
+		if err := usq.prepareQuery(ctx); err != nil {
+			return nil, err
+		}
+		selector := usq.sqlQuery(ctx)
+		if err := selector.Err(); err != nil {
+			return nil, err
+		}
+		step := sqlgraph.NewStep(
+			sqlgraph.From(userschema.Table, userschema.FieldID, selector),
+			sqlgraph.To(referrerschema.Table, referrerschema.FieldID),
+			sqlgraph.Edge(sqlgraph.O2O, false, userschema.ReferrerTable, userschema.ReferrerColumn),
+		)
+		fromU = sqlgraph.SetNeighbors(usq.driver.Dialect(), step)
+		return fromU, nil
+	}
+	return query
+}
+
+// QueryPersonalization chains the current query on the "personalization" edge.
+func (usq *UserSchemaQuery) QueryPersonalization() *PersonalizationSchemaQuery {
+	query := (&PersonalizationSchemaClient{config: usq.config}).Query()
+	query.path = func(ctx context.Context) (fromU *sql.Selector, err error) {
+		if err := usq.prepareQuery(ctx); err != nil {
+			return nil, err
+		}
+		selector := usq.sqlQuery(ctx)
+		if err := selector.Err(); err != nil {
+			return nil, err
+		}
+		step := sqlgraph.NewStep(
+			sqlgraph.From(userschema.Table, userschema.FieldID, selector),
+			sqlgraph.To(personalizationschema.Table, personalizationschema.FieldID),
+			sqlgraph.Edge(sqlgraph.O2O, false, userschema.PersonalizationTable, userschema.PersonalizationColumn),
+		)
+		fromU = sqlgraph.SetNeighbors(usq.driver.Dialect(), step)
+		return fromU, nil
+	}
+	return query
+}
+
+// QueryNamecard chains the current query on the "namecard" edge.
+func (usq *UserSchemaQuery) QueryNamecard() *NamecardSchemaQuery {
+	query := (&NamecardSchemaClient{config: usq.config}).Query()
+	query.path = func(ctx context.Context) (fromU *sql.Selector, err error) {
+		if err := usq.prepareQuery(ctx); err != nil {
+			return nil, err
+		}
+		selector := usq.sqlQuery(ctx)
+		if err := selector.Err(); err != nil {
+			return nil, err
+		}
+		step := sqlgraph.NewStep(
+			sqlgraph.From(userschema.Table, userschema.FieldID, selector),
+			sqlgraph.To(namecardschema.Table, namecardschema.FieldID),
+			sqlgraph.Edge(sqlgraph.O2O, false, userschema.NamecardTable, userschema.NamecardColumn),
+		)
+		fromU = sqlgraph.SetNeighbors(usq.driver.Dialect(), step)
+		return fromU, nil
+	}
+	return query
 }
 
 // First returns the first UserSchema entity from the query.
@@ -244,15 +390,87 @@ func (usq *UserSchemaQuery) Clone() *UserSchemaQuery {
 		return nil
 	}
 	return &UserSchemaQuery{
-		config:     usq.config,
-		ctx:        usq.ctx.Clone(),
-		order:      append([]userschema.OrderOption{}, usq.order...),
-		inters:     append([]Interceptor{}, usq.inters...),
-		predicates: append([]predicate.UserSchema{}, usq.predicates...),
+		config:              usq.config,
+		ctx:                 usq.ctx.Clone(),
+		order:               append([]userschema.OrderOption{}, usq.order...),
+		inters:              append([]Interceptor{}, usq.inters...),
+		predicates:          append([]predicate.UserSchema{}, usq.predicates...),
+		withRoles:           usq.withRoles.Clone(),
+		withProfile:         usq.withProfile.Clone(),
+		withFollow:          usq.withFollow.Clone(),
+		withReferrer:        usq.withReferrer.Clone(),
+		withPersonalization: usq.withPersonalization.Clone(),
+		withNamecard:        usq.withNamecard.Clone(),
 		// clone intermediate query.
 		sql:  usq.sql.Clone(),
 		path: usq.path,
 	}
+}
+
+// WithRoles tells the query-builder to eager-load the nodes that are connected to
+// the "roles" edge. The optional arguments are used to configure the query builder of the edge.
+func (usq *UserSchemaQuery) WithRoles(opts ...func(*RoleSchemaQuery)) *UserSchemaQuery {
+	query := (&RoleSchemaClient{config: usq.config}).Query()
+	for _, opt := range opts {
+		opt(query)
+	}
+	usq.withRoles = query
+	return usq
+}
+
+// WithProfile tells the query-builder to eager-load the nodes that are connected to
+// the "profile" edge. The optional arguments are used to configure the query builder of the edge.
+func (usq *UserSchemaQuery) WithProfile(opts ...func(*ProfileSchemaQuery)) *UserSchemaQuery {
+	query := (&ProfileSchemaClient{config: usq.config}).Query()
+	for _, opt := range opts {
+		opt(query)
+	}
+	usq.withProfile = query
+	return usq
+}
+
+// WithFollow tells the query-builder to eager-load the nodes that are connected to
+// the "follow" edge. The optional arguments are used to configure the query builder of the edge.
+func (usq *UserSchemaQuery) WithFollow(opts ...func(*FollowSchemaQuery)) *UserSchemaQuery {
+	query := (&FollowSchemaClient{config: usq.config}).Query()
+	for _, opt := range opts {
+		opt(query)
+	}
+	usq.withFollow = query
+	return usq
+}
+
+// WithReferrer tells the query-builder to eager-load the nodes that are connected to
+// the "referrer" edge. The optional arguments are used to configure the query builder of the edge.
+func (usq *UserSchemaQuery) WithReferrer(opts ...func(*ReferrerSchemaQuery)) *UserSchemaQuery {
+	query := (&ReferrerSchemaClient{config: usq.config}).Query()
+	for _, opt := range opts {
+		opt(query)
+	}
+	usq.withReferrer = query
+	return usq
+}
+
+// WithPersonalization tells the query-builder to eager-load the nodes that are connected to
+// the "personalization" edge. The optional arguments are used to configure the query builder of the edge.
+func (usq *UserSchemaQuery) WithPersonalization(opts ...func(*PersonalizationSchemaQuery)) *UserSchemaQuery {
+	query := (&PersonalizationSchemaClient{config: usq.config}).Query()
+	for _, opt := range opts {
+		opt(query)
+	}
+	usq.withPersonalization = query
+	return usq
+}
+
+// WithNamecard tells the query-builder to eager-load the nodes that are connected to
+// the "namecard" edge. The optional arguments are used to configure the query builder of the edge.
+func (usq *UserSchemaQuery) WithNamecard(opts ...func(*NamecardSchemaQuery)) *UserSchemaQuery {
+	query := (&NamecardSchemaClient{config: usq.config}).Query()
+	for _, opt := range opts {
+		opt(query)
+	}
+	usq.withNamecard = query
+	return usq
 }
 
 // GroupBy is used to group vertices by one or more fields/columns.
@@ -261,12 +479,12 @@ func (usq *UserSchemaQuery) Clone() *UserSchemaQuery {
 // Example:
 //
 //	var v []struct {
-//		Username string `json:"username,omitempty"`
+//		UUID uuid.UUID `json:"uuid,omitempty"`
 //		Count int `json:"count,omitempty"`
 //	}
 //
 //	client.UserSchema.Query().
-//		GroupBy(userschema.FieldUsername).
+//		GroupBy(userschema.FieldUUID).
 //		Aggregate(ent.Count()).
 //		Scan(ctx, &v)
 func (usq *UserSchemaQuery) GroupBy(field string, fields ...string) *UserSchemaGroupBy {
@@ -284,11 +502,11 @@ func (usq *UserSchemaQuery) GroupBy(field string, fields ...string) *UserSchemaG
 // Example:
 //
 //	var v []struct {
-//		Username string `json:"username,omitempty"`
+//		UUID uuid.UUID `json:"uuid,omitempty"`
 //	}
 //
 //	client.UserSchema.Query().
-//		Select(userschema.FieldUsername).
+//		Select(userschema.FieldUUID).
 //		Scan(ctx, &v)
 func (usq *UserSchemaQuery) Select(fields ...string) *UserSchemaSelect {
 	usq.ctx.Fields = append(usq.ctx.Fields, fields...)
@@ -331,15 +549,31 @@ func (usq *UserSchemaQuery) prepareQuery(ctx context.Context) error {
 
 func (usq *UserSchemaQuery) sqlAll(ctx context.Context, hooks ...queryHook) ([]*UserSchema, error) {
 	var (
-		nodes = []*UserSchema{}
-		_spec = usq.querySpec()
+		nodes       = []*UserSchema{}
+		withFKs     = usq.withFKs
+		_spec       = usq.querySpec()
+		loadedTypes = [6]bool{
+			usq.withRoles != nil,
+			usq.withProfile != nil,
+			usq.withFollow != nil,
+			usq.withReferrer != nil,
+			usq.withPersonalization != nil,
+			usq.withNamecard != nil,
+		}
 	)
+	if usq.withFollow != nil {
+		withFKs = true
+	}
+	if withFKs {
+		_spec.Node.Columns = append(_spec.Node.Columns, userschema.ForeignKeys...)
+	}
 	_spec.ScanValues = func(columns []string) ([]any, error) {
 		return (*UserSchema).scanValues(nil, columns)
 	}
 	_spec.Assign = func(columns []string, values []any) error {
 		node := &UserSchema{config: usq.config}
 		nodes = append(nodes, node)
+		node.Edges.loadedTypes = loadedTypes
 		return node.assignValues(columns, values)
 	}
 	for i := range hooks {
@@ -351,7 +585,220 @@ func (usq *UserSchemaQuery) sqlAll(ctx context.Context, hooks ...queryHook) ([]*
 	if len(nodes) == 0 {
 		return nodes, nil
 	}
+	if query := usq.withRoles; query != nil {
+		if err := usq.loadRoles(ctx, query, nodes,
+			func(n *UserSchema) { n.Edges.Roles = []*RoleSchema{} },
+			func(n *UserSchema, e *RoleSchema) { n.Edges.Roles = append(n.Edges.Roles, e) }); err != nil {
+			return nil, err
+		}
+	}
+	if query := usq.withProfile; query != nil {
+		if err := usq.loadProfile(ctx, query, nodes, nil,
+			func(n *UserSchema, e *ProfileSchema) { n.Edges.Profile = e }); err != nil {
+			return nil, err
+		}
+	}
+	if query := usq.withFollow; query != nil {
+		if err := usq.loadFollow(ctx, query, nodes, nil,
+			func(n *UserSchema, e *FollowSchema) { n.Edges.Follow = e }); err != nil {
+			return nil, err
+		}
+	}
+	if query := usq.withReferrer; query != nil {
+		if err := usq.loadReferrer(ctx, query, nodes, nil,
+			func(n *UserSchema, e *ReferrerSchema) { n.Edges.Referrer = e }); err != nil {
+			return nil, err
+		}
+	}
+	if query := usq.withPersonalization; query != nil {
+		if err := usq.loadPersonalization(ctx, query, nodes, nil,
+			func(n *UserSchema, e *PersonalizationSchema) { n.Edges.Personalization = e }); err != nil {
+			return nil, err
+		}
+	}
+	if query := usq.withNamecard; query != nil {
+		if err := usq.loadNamecard(ctx, query, nodes, nil,
+			func(n *UserSchema, e *NamecardSchema) { n.Edges.Namecard = e }); err != nil {
+			return nil, err
+		}
+	}
 	return nodes, nil
+}
+
+func (usq *UserSchemaQuery) loadRoles(ctx context.Context, query *RoleSchemaQuery, nodes []*UserSchema, init func(*UserSchema), assign func(*UserSchema, *RoleSchema)) error {
+	fks := make([]driver.Value, 0, len(nodes))
+	nodeids := make(map[int]*UserSchema)
+	for i := range nodes {
+		fks = append(fks, nodes[i].ID)
+		nodeids[nodes[i].ID] = nodes[i]
+		if init != nil {
+			init(nodes[i])
+		}
+	}
+	query.withFKs = true
+	query.Where(predicate.RoleSchema(func(s *sql.Selector) {
+		s.Where(sql.InValues(s.C(userschema.RolesColumn), fks...))
+	}))
+	neighbors, err := query.All(ctx)
+	if err != nil {
+		return err
+	}
+	for _, n := range neighbors {
+		fk := n.user_schema_roles
+		if fk == nil {
+			return fmt.Errorf(`foreign-key "user_schema_roles" is nil for node %v`, n.ID)
+		}
+		node, ok := nodeids[*fk]
+		if !ok {
+			return fmt.Errorf(`unexpected referenced foreign-key "user_schema_roles" returned %v for node %v`, *fk, n.ID)
+		}
+		assign(node, n)
+	}
+	return nil
+}
+func (usq *UserSchemaQuery) loadProfile(ctx context.Context, query *ProfileSchemaQuery, nodes []*UserSchema, init func(*UserSchema), assign func(*UserSchema, *ProfileSchema)) error {
+	fks := make([]driver.Value, 0, len(nodes))
+	nodeids := make(map[int]*UserSchema)
+	for i := range nodes {
+		fks = append(fks, nodes[i].ID)
+		nodeids[nodes[i].ID] = nodes[i]
+	}
+	query.withFKs = true
+	query.Where(predicate.ProfileSchema(func(s *sql.Selector) {
+		s.Where(sql.InValues(s.C(userschema.ProfileColumn), fks...))
+	}))
+	neighbors, err := query.All(ctx)
+	if err != nil {
+		return err
+	}
+	for _, n := range neighbors {
+		fk := n.user_schema_profile
+		if fk == nil {
+			return fmt.Errorf(`foreign-key "user_schema_profile" is nil for node %v`, n.ID)
+		}
+		node, ok := nodeids[*fk]
+		if !ok {
+			return fmt.Errorf(`unexpected referenced foreign-key "user_schema_profile" returned %v for node %v`, *fk, n.ID)
+		}
+		assign(node, n)
+	}
+	return nil
+}
+func (usq *UserSchemaQuery) loadFollow(ctx context.Context, query *FollowSchemaQuery, nodes []*UserSchema, init func(*UserSchema), assign func(*UserSchema, *FollowSchema)) error {
+	ids := make([]int, 0, len(nodes))
+	nodeids := make(map[int][]*UserSchema)
+	for i := range nodes {
+		if nodes[i].user_schema_follow == nil {
+			continue
+		}
+		fk := *nodes[i].user_schema_follow
+		if _, ok := nodeids[fk]; !ok {
+			ids = append(ids, fk)
+		}
+		nodeids[fk] = append(nodeids[fk], nodes[i])
+	}
+	if len(ids) == 0 {
+		return nil
+	}
+	query.Where(followschema.IDIn(ids...))
+	neighbors, err := query.All(ctx)
+	if err != nil {
+		return err
+	}
+	for _, n := range neighbors {
+		nodes, ok := nodeids[n.ID]
+		if !ok {
+			return fmt.Errorf(`unexpected foreign-key "user_schema_follow" returned %v`, n.ID)
+		}
+		for i := range nodes {
+			assign(nodes[i], n)
+		}
+	}
+	return nil
+}
+func (usq *UserSchemaQuery) loadReferrer(ctx context.Context, query *ReferrerSchemaQuery, nodes []*UserSchema, init func(*UserSchema), assign func(*UserSchema, *ReferrerSchema)) error {
+	fks := make([]driver.Value, 0, len(nodes))
+	nodeids := make(map[int]*UserSchema)
+	for i := range nodes {
+		fks = append(fks, nodes[i].ID)
+		nodeids[nodes[i].ID] = nodes[i]
+	}
+	query.withFKs = true
+	query.Where(predicate.ReferrerSchema(func(s *sql.Selector) {
+		s.Where(sql.InValues(s.C(userschema.ReferrerColumn), fks...))
+	}))
+	neighbors, err := query.All(ctx)
+	if err != nil {
+		return err
+	}
+	for _, n := range neighbors {
+		fk := n.user_schema_referrer
+		if fk == nil {
+			return fmt.Errorf(`foreign-key "user_schema_referrer" is nil for node %v`, n.ID)
+		}
+		node, ok := nodeids[*fk]
+		if !ok {
+			return fmt.Errorf(`unexpected referenced foreign-key "user_schema_referrer" returned %v for node %v`, *fk, n.ID)
+		}
+		assign(node, n)
+	}
+	return nil
+}
+func (usq *UserSchemaQuery) loadPersonalization(ctx context.Context, query *PersonalizationSchemaQuery, nodes []*UserSchema, init func(*UserSchema), assign func(*UserSchema, *PersonalizationSchema)) error {
+	fks := make([]driver.Value, 0, len(nodes))
+	nodeids := make(map[int]*UserSchema)
+	for i := range nodes {
+		fks = append(fks, nodes[i].ID)
+		nodeids[nodes[i].ID] = nodes[i]
+	}
+	query.withFKs = true
+	query.Where(predicate.PersonalizationSchema(func(s *sql.Selector) {
+		s.Where(sql.InValues(s.C(userschema.PersonalizationColumn), fks...))
+	}))
+	neighbors, err := query.All(ctx)
+	if err != nil {
+		return err
+	}
+	for _, n := range neighbors {
+		fk := n.user_schema_personalization
+		if fk == nil {
+			return fmt.Errorf(`foreign-key "user_schema_personalization" is nil for node %v`, n.ID)
+		}
+		node, ok := nodeids[*fk]
+		if !ok {
+			return fmt.Errorf(`unexpected referenced foreign-key "user_schema_personalization" returned %v for node %v`, *fk, n.ID)
+		}
+		assign(node, n)
+	}
+	return nil
+}
+func (usq *UserSchemaQuery) loadNamecard(ctx context.Context, query *NamecardSchemaQuery, nodes []*UserSchema, init func(*UserSchema), assign func(*UserSchema, *NamecardSchema)) error {
+	fks := make([]driver.Value, 0, len(nodes))
+	nodeids := make(map[int]*UserSchema)
+	for i := range nodes {
+		fks = append(fks, nodes[i].ID)
+		nodeids[nodes[i].ID] = nodes[i]
+	}
+	query.withFKs = true
+	query.Where(predicate.NamecardSchema(func(s *sql.Selector) {
+		s.Where(sql.InValues(s.C(userschema.NamecardColumn), fks...))
+	}))
+	neighbors, err := query.All(ctx)
+	if err != nil {
+		return err
+	}
+	for _, n := range neighbors {
+		fk := n.user_schema_namecard
+		if fk == nil {
+			return fmt.Errorf(`foreign-key "user_schema_namecard" is nil for node %v`, n.ID)
+		}
+		node, ok := nodeids[*fk]
+		if !ok {
+			return fmt.Errorf(`unexpected referenced foreign-key "user_schema_namecard" returned %v for node %v`, *fk, n.ID)
+		}
+		assign(node, n)
+	}
+	return nil
 }
 
 func (usq *UserSchemaQuery) sqlCount(ctx context.Context) (int, error) {

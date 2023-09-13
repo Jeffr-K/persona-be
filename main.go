@@ -1,13 +1,11 @@
 package main
 
 import (
-	"fmt"
 	"github.com/labstack/echo/v4"
 	echoSwagger "github.com/swaggo/echo-swagger"
-	"iam/config"
-	_ "iam/docs"
-	"iam/libs/queue"
 	"net/http"
+	"persona/config"
+	_ "persona/docs"
 )
 
 // @title Sunnyside
@@ -21,11 +19,11 @@ func main() {
 
 	config.Application{}.BootStrap(server)
 
-	q := queue.Queue{}
-
-	if err := q.Produce("찌혜얌, 닥꼬기 맛이께 머겅 내사룽. "); err != nil {
-		fmt.Println("에러얌얌")
-	}
+	//q := queue.Queue{}
+	//
+	//if err := q.Produce("찌혜얌, 닥꼬기 맛이께 머겅 내사룽. "); err != nil {
+	//	fmt.Println("에러얌얌")
+	//}
 
 	server.GET("/api/docs/*", echoSwagger.WrapHandler)
 

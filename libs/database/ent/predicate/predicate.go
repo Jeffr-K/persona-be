@@ -6,5 +6,98 @@ import (
 	"entgo.io/ent/dialect/sql"
 )
 
+// ApplicationSchema is the predicate function for applicationschema builders.
+type ApplicationSchema func(*sql.Selector)
+
+// AssignmentSchema is the predicate function for assignmentschema builders.
+type AssignmentSchema func(*sql.Selector)
+
+// BadgeSchema is the predicate function for badgeschema builders.
+type BadgeSchema func(*sql.Selector)
+
+// BookmarkSchema is the predicate function for bookmarkschema builders.
+type BookmarkSchema func(*sql.Selector)
+
+// CommentSchema is the predicate function for commentschema builders.
+type CommentSchema func(*sql.Selector)
+
+// CompanySchema is the predicate function for companyschema builders.
+type CompanySchema func(*sql.Selector)
+
+// CoverLetterSchema is the predicate function for coverletterschema builders.
+type CoverLetterSchema func(*sql.Selector)
+
+// ExperienceSchema is the predicate function for experienceschema builders.
+type ExperienceSchema func(*sql.Selector)
+
+// FollowSchema is the predicate function for followschema builders.
+type FollowSchema func(*sql.Selector)
+
+// ImageSchema is the predicate function for imageschema builders.
+type ImageSchema func(*sql.Selector)
+
+// JobSchema is the predicate function for jobschema builders.
+type JobSchema func(*sql.Selector)
+
+// LeetcodeSchema is the predicate function for leetcodeschema builders.
+type LeetcodeSchema func(*sql.Selector)
+
+// LikeSchema is the predicate function for likeschema builders.
+type LikeSchema func(*sql.Selector)
+
+// LocationSchema is the predicate function for locationschema builders.
+type LocationSchema func(*sql.Selector)
+
+// LogoSchema is the predicate function for logoschema builders.
+type LogoSchema func(*sql.Selector)
+
+// NamecardSchema is the predicate function for namecardschema builders.
+type NamecardSchema func(*sql.Selector)
+
+// NotificationSchema is the predicate function for notificationschema builders.
+type NotificationSchema func(*sql.Selector)
+
+// PaymentSchema is the predicate function for paymentschema builders.
+type PaymentSchema func(*sql.Selector)
+
+// PersonalizationSchema is the predicate function for personalizationschema builders.
+type PersonalizationSchema func(*sql.Selector)
+
+// PhoneSchema is the predicate function for phoneschema builders.
+type PhoneSchema func(*sql.Selector)
+
+// PhotoSchema is the predicate function for photoschema builders.
+type PhotoSchema func(*sql.Selector)
+
+// PoolSchema is the predicate function for poolschema builders.
+type PoolSchema func(*sql.Selector)
+
+// PortfolioSchema is the predicate function for portfolioschema builders.
+type PortfolioSchema func(*sql.Selector)
+
+// PositionSchema is the predicate function for positionschema builders.
+type PositionSchema func(*sql.Selector)
+
+// ProfileSchema is the predicate function for profileschema builders.
+type ProfileSchema func(*sql.Selector)
+
+// ReferrerSchema is the predicate function for referrerschema builders.
+type ReferrerSchema func(*sql.Selector)
+
+// ResumeSchema is the predicate function for resumeschema builders.
+type ResumeSchema func(*sql.Selector)
+
+// RoleSchema is the predicate function for roleschema builders.
+type RoleSchema func(*sql.Selector)
+
+// SkillSchema is the predicate function for skillschema builders.
+type SkillSchema func(*sql.Selector)
+
+// SubscribeSchema is the predicate function for subscribeschema builders.
+type SubscribeSchema func(*sql.Selector)
+
+// ThreadSchema is the predicate function for threadschema builders.
+type ThreadSchema func(*sql.Selector)
+
 // UserSchema is the predicate function for userschema builders.
 type UserSchema func(*sql.Selector)

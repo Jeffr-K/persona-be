@@ -4,11 +4,18 @@ package ent
 
 import (
 	"fmt"
-	"iam/libs/database/ent/userschema"
+	"persona/libs/database/ent/followschema"
+	"persona/libs/database/ent/namecardschema"
+	"persona/libs/database/ent/personalizationschema"
+	"persona/libs/database/ent/profileschema"
+	"persona/libs/database/ent/referrerschema"
+	"persona/libs/database/ent/userschema"
 	"strings"
+	"time"
 
 	"entgo.io/ent"
 	"entgo.io/ent/dialect/sql"
+	"github.com/google/uuid"
 )
 
 // UserSchema is the model entity for the UserSchema schema.
@@ -16,13 +23,116 @@ type UserSchema struct {
 	config `json:"-"`
 	// ID of the ent.
 	ID int `json:"id,omitempty"`
-	// Username holds the value of the "username" field.
+	// UUID
+	UUID uuid.UUID `json:"uuid,omitempty"`
+	// 사용자 이름
 	Username string `json:"username,omitempty"`
-	// Password holds the value of the "password" field.
+	// 사용자 비밀번호
 	Password string `json:"password,omitempty"`
-	// Email holds the value of the "email" field.
-	Email        string `json:"email,omitempty"`
-	selectValues sql.SelectValues
+	// 사용자 이메일
+	Email string `json:"email,omitempty"`
+	// 사용자 등록 일시
+	CreatedAt time.Time `json:"createdAt,omitempty"`
+	// 사용자 수정 일시
+	UpdatedAt time.Time `json:"updatedAt,omitempty"`
+	// Edges holds the relations/edges for other nodes in the graph.
+	// The values are being populated by the UserSchemaQuery when eager-loading is set.
+	Edges              UserSchemaEdges `json:"edges"`
+	user_schema_follow *int
+	selectValues       sql.SelectValues
+}
+
+// UserSchemaEdges holds the relations/edges for other nodes in the graph.
+type UserSchemaEdges struct {
+	// Roles holds the value of the roles edge.
+	Roles []*RoleSchema `json:"roles,omitempty"`
+	// Profile holds the value of the profile edge.
+	Profile *ProfileSchema `json:"profile,omitempty"`
+	// Follow holds the value of the follow edge.
+	Follow *FollowSchema `json:"follow,omitempty"`
+	// Referrer holds the value of the referrer edge.
+	Referrer *ReferrerSchema `json:"referrer,omitempty"`
+	// Personalization holds the value of the personalization edge.
+	Personalization *PersonalizationSchema `json:"personalization,omitempty"`
+	// Namecard holds the value of the namecard edge.
+	Namecard *NamecardSchema `json:"namecard,omitempty"`
+	// loadedTypes holds the information for reporting if a
+	// type was loaded (or requested) in eager-loading or not.
+	loadedTypes [6]bool
+}
+
+// RolesOrErr returns the Roles value or an error if the edge
+// was not loaded in eager-loading.
+func (e UserSchemaEdges) RolesOrErr() ([]*RoleSchema, error) {
+	if e.loadedTypes[0] {
+		return e.Roles, nil
+	}
+	return nil, &NotLoadedError{edge: "roles"}
+}
+
+// ProfileOrErr returns the Profile value or an error if the edge
+// was not loaded in eager-loading, or loaded but was not found.
+func (e UserSchemaEdges) ProfileOrErr() (*ProfileSchema, error) {
+	if e.loadedTypes[1] {
+		if e.Profile == nil {
+			// Edge was loaded but was not found.
+			return nil, &NotFoundError{label: profileschema.Label}
+		}
+		return e.Profile, nil
+	}
+	return nil, &NotLoadedError{edge: "profile"}
+}
+
+// FollowOrErr returns the Follow value or an error if the edge
+// was not loaded in eager-loading, or loaded but was not found.
+func (e UserSchemaEdges) FollowOrErr() (*FollowSchema, error) {
+	if e.loadedTypes[2] {
+		if e.Follow == nil {
+			// Edge was loaded but was not found.
+			return nil, &NotFoundError{label: followschema.Label}
+		}
+		return e.Follow, nil
+	}
+	return nil, &NotLoadedError{edge: "follow"}
+}
+
+// ReferrerOrErr returns the Referrer value or an error if the edge
+// was not loaded in eager-loading, or loaded but was not found.
+func (e UserSchemaEdges) ReferrerOrErr() (*ReferrerSchema, error) {
+	if e.loadedTypes[3] {
+		if e.Referrer == nil {
+			// Edge was loaded but was not found.
+			return nil, &NotFoundError{label: referrerschema.Label}
+		}
+		return e.Referrer, nil
+	}
+	return nil, &NotLoadedError{edge: "referrer"}
+}
+
+// PersonalizationOrErr returns the Personalization value or an error if the edge
+// was not loaded in eager-loading, or loaded but was not found.
+func (e UserSchemaEdges) PersonalizationOrErr() (*PersonalizationSchema, error) {
+	if e.loadedTypes[4] {
+		if e.Personalization == nil {
+			// Edge was loaded but was not found.
+			return nil, &NotFoundError{label: personalizationschema.Label}
+		}
+		return e.Personalization, nil
+	}
+	return nil, &NotLoadedError{edge: "personalization"}
+}
+
+// NamecardOrErr returns the Namecard value or an error if the edge
+// was not loaded in eager-loading, or loaded but was not found.
+func (e UserSchemaEdges) NamecardOrErr() (*NamecardSchema, error) {
+	if e.loadedTypes[5] {
+		if e.Namecard == nil {
+			// Edge was loaded but was not found.
+			return nil, &NotFoundError{label: namecardschema.Label}
+		}
+		return e.Namecard, nil
+	}
+	return nil, &NotLoadedError{edge: "namecard"}
 }
 
 // scanValues returns the types for scanning values from sql.Rows.
@@ -34,6 +144,12 @@ func (*UserSchema) scanValues(columns []string) ([]any, error) {
 			values[i] = new(sql.NullInt64)
 		case userschema.FieldUsername, userschema.FieldPassword, userschema.FieldEmail:
 			values[i] = new(sql.NullString)
+		case userschema.FieldCreatedAt, userschema.FieldUpdatedAt:
+			values[i] = new(sql.NullTime)
+		case userschema.FieldUUID:
+			values[i] = new(uuid.UUID)
+		case userschema.ForeignKeys[0]: // user_schema_follow
+			values[i] = new(sql.NullInt64)
 		default:
 			values[i] = new(sql.UnknownType)
 		}
@@ -55,6 +171,12 @@ func (us *UserSchema) assignValues(columns []string, values []any) error {
 				return fmt.Errorf("unexpected type %T for field id", value)
 			}
 			us.ID = int(value.Int64)
+		case userschema.FieldUUID:
+			if value, ok := values[i].(*uuid.UUID); !ok {
+				return fmt.Errorf("unexpected type %T for field uuid", values[i])
+			} else if value != nil {
+				us.UUID = *value
+			}
 		case userschema.FieldUsername:
 			if value, ok := values[i].(*sql.NullString); !ok {
 				return fmt.Errorf("unexpected type %T for field username", values[i])
@@ -73,6 +195,25 @@ func (us *UserSchema) assignValues(columns []string, values []any) error {
 			} else if value.Valid {
 				us.Email = value.String
 			}
+		case userschema.FieldCreatedAt:
+			if value, ok := values[i].(*sql.NullTime); !ok {
+				return fmt.Errorf("unexpected type %T for field createdAt", values[i])
+			} else if value.Valid {
+				us.CreatedAt = value.Time
+			}
+		case userschema.FieldUpdatedAt:
+			if value, ok := values[i].(*sql.NullTime); !ok {
+				return fmt.Errorf("unexpected type %T for field updatedAt", values[i])
+			} else if value.Valid {
+				us.UpdatedAt = value.Time
+			}
+		case userschema.ForeignKeys[0]:
+			if value, ok := values[i].(*sql.NullInt64); !ok {
+				return fmt.Errorf("unexpected type %T for edge-field user_schema_follow", value)
+			} else if value.Valid {
+				us.user_schema_follow = new(int)
+				*us.user_schema_follow = int(value.Int64)
+			}
 		default:
 			us.selectValues.Set(columns[i], values[i])
 		}
@@ -84,6 +225,36 @@ func (us *UserSchema) assignValues(columns []string, values []any) error {
 // This includes values selected through modifiers, order, etc.
 func (us *UserSchema) Value(name string) (ent.Value, error) {
 	return us.selectValues.Get(name)
+}
+
+// QueryRoles queries the "roles" edge of the UserSchema entity.
+func (us *UserSchema) QueryRoles() *RoleSchemaQuery {
+	return NewUserSchemaClient(us.config).QueryRoles(us)
+}
+
+// QueryProfile queries the "profile" edge of the UserSchema entity.
+func (us *UserSchema) QueryProfile() *ProfileSchemaQuery {
+	return NewUserSchemaClient(us.config).QueryProfile(us)
+}
+
+// QueryFollow queries the "follow" edge of the UserSchema entity.
+func (us *UserSchema) QueryFollow() *FollowSchemaQuery {
+	return NewUserSchemaClient(us.config).QueryFollow(us)
+}
+
+// QueryReferrer queries the "referrer" edge of the UserSchema entity.
+func (us *UserSchema) QueryReferrer() *ReferrerSchemaQuery {
+	return NewUserSchemaClient(us.config).QueryReferrer(us)
+}
+
+// QueryPersonalization queries the "personalization" edge of the UserSchema entity.
+func (us *UserSchema) QueryPersonalization() *PersonalizationSchemaQuery {
+	return NewUserSchemaClient(us.config).QueryPersonalization(us)
+}
+
+// QueryNamecard queries the "namecard" edge of the UserSchema entity.
+func (us *UserSchema) QueryNamecard() *NamecardSchemaQuery {
+	return NewUserSchemaClient(us.config).QueryNamecard(us)
 }
 
 // Update returns a builder for updating this UserSchema.
@@ -109,6 +280,9 @@ func (us *UserSchema) String() string {
 	var builder strings.Builder
 	builder.WriteString("UserSchema(")
 	builder.WriteString(fmt.Sprintf("id=%v, ", us.ID))
+	builder.WriteString("uuid=")
+	builder.WriteString(fmt.Sprintf("%v", us.UUID))
+	builder.WriteString(", ")
 	builder.WriteString("username=")
 	builder.WriteString(us.Username)
 	builder.WriteString(", ")
@@ -117,6 +291,12 @@ func (us *UserSchema) String() string {
 	builder.WriteString(", ")
 	builder.WriteString("email=")
 	builder.WriteString(us.Email)
+	builder.WriteString(", ")
+	builder.WriteString("createdAt=")
+	builder.WriteString(us.CreatedAt.Format(time.ANSIC))
+	builder.WriteString(", ")
+	builder.WriteString("updatedAt=")
+	builder.WriteString(us.UpdatedAt.Format(time.ANSIC))
 	builder.WriteByte(')')
 	return builder.String()
 }

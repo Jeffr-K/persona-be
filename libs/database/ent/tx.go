@@ -12,6 +12,68 @@ import (
 // Tx is a transactional client that is created by calling Client.Tx().
 type Tx struct {
 	config
+	// ApplicationSchema is the client for interacting with the ApplicationSchema builders.
+	ApplicationSchema *ApplicationSchemaClient
+	// AssignmentSchema is the client for interacting with the AssignmentSchema builders.
+	AssignmentSchema *AssignmentSchemaClient
+	// BadgeSchema is the client for interacting with the BadgeSchema builders.
+	BadgeSchema *BadgeSchemaClient
+	// BookmarkSchema is the client for interacting with the BookmarkSchema builders.
+	BookmarkSchema *BookmarkSchemaClient
+	// CommentSchema is the client for interacting with the CommentSchema builders.
+	CommentSchema *CommentSchemaClient
+	// CompanySchema is the client for interacting with the CompanySchema builders.
+	CompanySchema *CompanySchemaClient
+	// CoverLetterSchema is the client for interacting with the CoverLetterSchema builders.
+	CoverLetterSchema *CoverLetterSchemaClient
+	// ExperienceSchema is the client for interacting with the ExperienceSchema builders.
+	ExperienceSchema *ExperienceSchemaClient
+	// FollowSchema is the client for interacting with the FollowSchema builders.
+	FollowSchema *FollowSchemaClient
+	// ImageSchema is the client for interacting with the ImageSchema builders.
+	ImageSchema *ImageSchemaClient
+	// JobSchema is the client for interacting with the JobSchema builders.
+	JobSchema *JobSchemaClient
+	// LeetcodeSchema is the client for interacting with the LeetcodeSchema builders.
+	LeetcodeSchema *LeetcodeSchemaClient
+	// LikeSchema is the client for interacting with the LikeSchema builders.
+	LikeSchema *LikeSchemaClient
+	// LocationSchema is the client for interacting with the LocationSchema builders.
+	LocationSchema *LocationSchemaClient
+	// LogoSchema is the client for interacting with the LogoSchema builders.
+	LogoSchema *LogoSchemaClient
+	// NamecardSchema is the client for interacting with the NamecardSchema builders.
+	NamecardSchema *NamecardSchemaClient
+	// NotificationSchema is the client for interacting with the NotificationSchema builders.
+	NotificationSchema *NotificationSchemaClient
+	// PaymentSchema is the client for interacting with the PaymentSchema builders.
+	PaymentSchema *PaymentSchemaClient
+	// PersonalizationSchema is the client for interacting with the PersonalizationSchema builders.
+	PersonalizationSchema *PersonalizationSchemaClient
+	// PhoneSchema is the client for interacting with the PhoneSchema builders.
+	PhoneSchema *PhoneSchemaClient
+	// PhotoSchema is the client for interacting with the PhotoSchema builders.
+	PhotoSchema *PhotoSchemaClient
+	// PoolSchema is the client for interacting with the PoolSchema builders.
+	PoolSchema *PoolSchemaClient
+	// PortfolioSchema is the client for interacting with the PortfolioSchema builders.
+	PortfolioSchema *PortfolioSchemaClient
+	// PositionSchema is the client for interacting with the PositionSchema builders.
+	PositionSchema *PositionSchemaClient
+	// ProfileSchema is the client for interacting with the ProfileSchema builders.
+	ProfileSchema *ProfileSchemaClient
+	// ReferrerSchema is the client for interacting with the ReferrerSchema builders.
+	ReferrerSchema *ReferrerSchemaClient
+	// ResumeSchema is the client for interacting with the ResumeSchema builders.
+	ResumeSchema *ResumeSchemaClient
+	// RoleSchema is the client for interacting with the RoleSchema builders.
+	RoleSchema *RoleSchemaClient
+	// SkillSchema is the client for interacting with the SkillSchema builders.
+	SkillSchema *SkillSchemaClient
+	// SubscribeSchema is the client for interacting with the SubscribeSchema builders.
+	SubscribeSchema *SubscribeSchemaClient
+	// ThreadSchema is the client for interacting with the ThreadSchema builders.
+	ThreadSchema *ThreadSchemaClient
 	// UserSchema is the client for interacting with the UserSchema builders.
 	UserSchema *UserSchemaClient
 
@@ -145,6 +207,37 @@ func (tx *Tx) Client() *Client {
 }
 
 func (tx *Tx) init() {
+	tx.ApplicationSchema = NewApplicationSchemaClient(tx.config)
+	tx.AssignmentSchema = NewAssignmentSchemaClient(tx.config)
+	tx.BadgeSchema = NewBadgeSchemaClient(tx.config)
+	tx.BookmarkSchema = NewBookmarkSchemaClient(tx.config)
+	tx.CommentSchema = NewCommentSchemaClient(tx.config)
+	tx.CompanySchema = NewCompanySchemaClient(tx.config)
+	tx.CoverLetterSchema = NewCoverLetterSchemaClient(tx.config)
+	tx.ExperienceSchema = NewExperienceSchemaClient(tx.config)
+	tx.FollowSchema = NewFollowSchemaClient(tx.config)
+	tx.ImageSchema = NewImageSchemaClient(tx.config)
+	tx.JobSchema = NewJobSchemaClient(tx.config)
+	tx.LeetcodeSchema = NewLeetcodeSchemaClient(tx.config)
+	tx.LikeSchema = NewLikeSchemaClient(tx.config)
+	tx.LocationSchema = NewLocationSchemaClient(tx.config)
+	tx.LogoSchema = NewLogoSchemaClient(tx.config)
+	tx.NamecardSchema = NewNamecardSchemaClient(tx.config)
+	tx.NotificationSchema = NewNotificationSchemaClient(tx.config)
+	tx.PaymentSchema = NewPaymentSchemaClient(tx.config)
+	tx.PersonalizationSchema = NewPersonalizationSchemaClient(tx.config)
+	tx.PhoneSchema = NewPhoneSchemaClient(tx.config)
+	tx.PhotoSchema = NewPhotoSchemaClient(tx.config)
+	tx.PoolSchema = NewPoolSchemaClient(tx.config)
+	tx.PortfolioSchema = NewPortfolioSchemaClient(tx.config)
+	tx.PositionSchema = NewPositionSchemaClient(tx.config)
+	tx.ProfileSchema = NewProfileSchemaClient(tx.config)
+	tx.ReferrerSchema = NewReferrerSchemaClient(tx.config)
+	tx.ResumeSchema = NewResumeSchemaClient(tx.config)
+	tx.RoleSchema = NewRoleSchemaClient(tx.config)
+	tx.SkillSchema = NewSkillSchemaClient(tx.config)
+	tx.SubscribeSchema = NewSubscribeSchemaClient(tx.config)
+	tx.ThreadSchema = NewThreadSchemaClient(tx.config)
 	tx.UserSchema = NewUserSchemaClient(tx.config)
 }
 
@@ -155,7 +248,7 @@ func (tx *Tx) init() {
 // of them in order to commit or rollback the transaction.
 //
 // If a closed transaction is embedded in one of the generated entities, and the entity
-// applies a query, for example: UserSchema.QueryXXX(), the query will be executed
+// applies a query, for example: ApplicationSchema.QueryXXX(), the query will be executed
 // through the driver which created this transaction.
 //
 // Note that txDriver is not goroutine safe.

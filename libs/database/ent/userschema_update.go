@@ -6,12 +6,20 @@ import (
 	"context"
 	"errors"
 	"fmt"
-	"iam/libs/database/ent/predicate"
-	"iam/libs/database/ent/userschema"
+	"persona/libs/database/ent/followschema"
+	"persona/libs/database/ent/namecardschema"
+	"persona/libs/database/ent/personalizationschema"
+	"persona/libs/database/ent/predicate"
+	"persona/libs/database/ent/profileschema"
+	"persona/libs/database/ent/referrerschema"
+	"persona/libs/database/ent/roleschema"
+	"persona/libs/database/ent/userschema"
+	"time"
 
 	"entgo.io/ent/dialect/sql"
 	"entgo.io/ent/dialect/sql/sqlgraph"
 	"entgo.io/ent/schema/field"
+	"github.com/google/uuid"
 )
 
 // UserSchemaUpdate is the builder for updating UserSchema entities.
@@ -24,6 +32,20 @@ type UserSchemaUpdate struct {
 // Where appends a list predicates to the UserSchemaUpdate builder.
 func (usu *UserSchemaUpdate) Where(ps ...predicate.UserSchema) *UserSchemaUpdate {
 	usu.mutation.Where(ps...)
+	return usu
+}
+
+// SetUUID sets the "uuid" field.
+func (usu *UserSchemaUpdate) SetUUID(u uuid.UUID) *UserSchemaUpdate {
+	usu.mutation.SetUUID(u)
+	return usu
+}
+
+// SetNillableUUID sets the "uuid" field if the given value is not nil.
+func (usu *UserSchemaUpdate) SetNillableUUID(u *uuid.UUID) *UserSchemaUpdate {
+	if u != nil {
+		usu.SetUUID(*u)
+	}
 	return usu
 }
 
@@ -45,9 +67,198 @@ func (usu *UserSchemaUpdate) SetEmail(s string) *UserSchemaUpdate {
 	return usu
 }
 
+// SetCreatedAt sets the "createdAt" field.
+func (usu *UserSchemaUpdate) SetCreatedAt(t time.Time) *UserSchemaUpdate {
+	usu.mutation.SetCreatedAt(t)
+	return usu
+}
+
+// SetNillableCreatedAt sets the "createdAt" field if the given value is not nil.
+func (usu *UserSchemaUpdate) SetNillableCreatedAt(t *time.Time) *UserSchemaUpdate {
+	if t != nil {
+		usu.SetCreatedAt(*t)
+	}
+	return usu
+}
+
+// SetUpdatedAt sets the "updatedAt" field.
+func (usu *UserSchemaUpdate) SetUpdatedAt(t time.Time) *UserSchemaUpdate {
+	usu.mutation.SetUpdatedAt(t)
+	return usu
+}
+
+// SetNillableUpdatedAt sets the "updatedAt" field if the given value is not nil.
+func (usu *UserSchemaUpdate) SetNillableUpdatedAt(t *time.Time) *UserSchemaUpdate {
+	if t != nil {
+		usu.SetUpdatedAt(*t)
+	}
+	return usu
+}
+
+// AddRoleIDs adds the "roles" edge to the RoleSchema entity by IDs.
+func (usu *UserSchemaUpdate) AddRoleIDs(ids ...int) *UserSchemaUpdate {
+	usu.mutation.AddRoleIDs(ids...)
+	return usu
+}
+
+// AddRoles adds the "roles" edges to the RoleSchema entity.
+func (usu *UserSchemaUpdate) AddRoles(r ...*RoleSchema) *UserSchemaUpdate {
+	ids := make([]int, len(r))
+	for i := range r {
+		ids[i] = r[i].ID
+	}
+	return usu.AddRoleIDs(ids...)
+}
+
+// SetProfileID sets the "profile" edge to the ProfileSchema entity by ID.
+func (usu *UserSchemaUpdate) SetProfileID(id int) *UserSchemaUpdate {
+	usu.mutation.SetProfileID(id)
+	return usu
+}
+
+// SetNillableProfileID sets the "profile" edge to the ProfileSchema entity by ID if the given value is not nil.
+func (usu *UserSchemaUpdate) SetNillableProfileID(id *int) *UserSchemaUpdate {
+	if id != nil {
+		usu = usu.SetProfileID(*id)
+	}
+	return usu
+}
+
+// SetProfile sets the "profile" edge to the ProfileSchema entity.
+func (usu *UserSchemaUpdate) SetProfile(p *ProfileSchema) *UserSchemaUpdate {
+	return usu.SetProfileID(p.ID)
+}
+
+// SetFollowID sets the "follow" edge to the FollowSchema entity by ID.
+func (usu *UserSchemaUpdate) SetFollowID(id int) *UserSchemaUpdate {
+	usu.mutation.SetFollowID(id)
+	return usu
+}
+
+// SetNillableFollowID sets the "follow" edge to the FollowSchema entity by ID if the given value is not nil.
+func (usu *UserSchemaUpdate) SetNillableFollowID(id *int) *UserSchemaUpdate {
+	if id != nil {
+		usu = usu.SetFollowID(*id)
+	}
+	return usu
+}
+
+// SetFollow sets the "follow" edge to the FollowSchema entity.
+func (usu *UserSchemaUpdate) SetFollow(f *FollowSchema) *UserSchemaUpdate {
+	return usu.SetFollowID(f.ID)
+}
+
+// SetReferrerID sets the "referrer" edge to the ReferrerSchema entity by ID.
+func (usu *UserSchemaUpdate) SetReferrerID(id int) *UserSchemaUpdate {
+	usu.mutation.SetReferrerID(id)
+	return usu
+}
+
+// SetNillableReferrerID sets the "referrer" edge to the ReferrerSchema entity by ID if the given value is not nil.
+func (usu *UserSchemaUpdate) SetNillableReferrerID(id *int) *UserSchemaUpdate {
+	if id != nil {
+		usu = usu.SetReferrerID(*id)
+	}
+	return usu
+}
+
+// SetReferrer sets the "referrer" edge to the ReferrerSchema entity.
+func (usu *UserSchemaUpdate) SetReferrer(r *ReferrerSchema) *UserSchemaUpdate {
+	return usu.SetReferrerID(r.ID)
+}
+
+// SetPersonalizationID sets the "personalization" edge to the PersonalizationSchema entity by ID.
+func (usu *UserSchemaUpdate) SetPersonalizationID(id int) *UserSchemaUpdate {
+	usu.mutation.SetPersonalizationID(id)
+	return usu
+}
+
+// SetNillablePersonalizationID sets the "personalization" edge to the PersonalizationSchema entity by ID if the given value is not nil.
+func (usu *UserSchemaUpdate) SetNillablePersonalizationID(id *int) *UserSchemaUpdate {
+	if id != nil {
+		usu = usu.SetPersonalizationID(*id)
+	}
+	return usu
+}
+
+// SetPersonalization sets the "personalization" edge to the PersonalizationSchema entity.
+func (usu *UserSchemaUpdate) SetPersonalization(p *PersonalizationSchema) *UserSchemaUpdate {
+	return usu.SetPersonalizationID(p.ID)
+}
+
+// SetNamecardID sets the "namecard" edge to the NamecardSchema entity by ID.
+func (usu *UserSchemaUpdate) SetNamecardID(id int) *UserSchemaUpdate {
+	usu.mutation.SetNamecardID(id)
+	return usu
+}
+
+// SetNillableNamecardID sets the "namecard" edge to the NamecardSchema entity by ID if the given value is not nil.
+func (usu *UserSchemaUpdate) SetNillableNamecardID(id *int) *UserSchemaUpdate {
+	if id != nil {
+		usu = usu.SetNamecardID(*id)
+	}
+	return usu
+}
+
+// SetNamecard sets the "namecard" edge to the NamecardSchema entity.
+func (usu *UserSchemaUpdate) SetNamecard(n *NamecardSchema) *UserSchemaUpdate {
+	return usu.SetNamecardID(n.ID)
+}
+
 // Mutation returns the UserSchemaMutation object of the builder.
 func (usu *UserSchemaUpdate) Mutation() *UserSchemaMutation {
 	return usu.mutation
+}
+
+// ClearRoles clears all "roles" edges to the RoleSchema entity.
+func (usu *UserSchemaUpdate) ClearRoles() *UserSchemaUpdate {
+	usu.mutation.ClearRoles()
+	return usu
+}
+
+// RemoveRoleIDs removes the "roles" edge to RoleSchema entities by IDs.
+func (usu *UserSchemaUpdate) RemoveRoleIDs(ids ...int) *UserSchemaUpdate {
+	usu.mutation.RemoveRoleIDs(ids...)
+	return usu
+}
+
+// RemoveRoles removes "roles" edges to RoleSchema entities.
+func (usu *UserSchemaUpdate) RemoveRoles(r ...*RoleSchema) *UserSchemaUpdate {
+	ids := make([]int, len(r))
+	for i := range r {
+		ids[i] = r[i].ID
+	}
+	return usu.RemoveRoleIDs(ids...)
+}
+
+// ClearProfile clears the "profile" edge to the ProfileSchema entity.
+func (usu *UserSchemaUpdate) ClearProfile() *UserSchemaUpdate {
+	usu.mutation.ClearProfile()
+	return usu
+}
+
+// ClearFollow clears the "follow" edge to the FollowSchema entity.
+func (usu *UserSchemaUpdate) ClearFollow() *UserSchemaUpdate {
+	usu.mutation.ClearFollow()
+	return usu
+}
+
+// ClearReferrer clears the "referrer" edge to the ReferrerSchema entity.
+func (usu *UserSchemaUpdate) ClearReferrer() *UserSchemaUpdate {
+	usu.mutation.ClearReferrer()
+	return usu
+}
+
+// ClearPersonalization clears the "personalization" edge to the PersonalizationSchema entity.
+func (usu *UserSchemaUpdate) ClearPersonalization() *UserSchemaUpdate {
+	usu.mutation.ClearPersonalization()
+	return usu
+}
+
+// ClearNamecard clears the "namecard" edge to the NamecardSchema entity.
+func (usu *UserSchemaUpdate) ClearNamecard() *UserSchemaUpdate {
+	usu.mutation.ClearNamecard()
+	return usu
 }
 
 // Save executes the query and returns the number of nodes affected by the update operation.
@@ -86,6 +297,9 @@ func (usu *UserSchemaUpdate) sqlSave(ctx context.Context) (n int, err error) {
 			}
 		}
 	}
+	if value, ok := usu.mutation.UUID(); ok {
+		_spec.SetField(userschema.FieldUUID, field.TypeUUID, value)
+	}
 	if value, ok := usu.mutation.Username(); ok {
 		_spec.SetField(userschema.FieldUsername, field.TypeString, value)
 	}
@@ -94,6 +308,202 @@ func (usu *UserSchemaUpdate) sqlSave(ctx context.Context) (n int, err error) {
 	}
 	if value, ok := usu.mutation.Email(); ok {
 		_spec.SetField(userschema.FieldEmail, field.TypeString, value)
+	}
+	if value, ok := usu.mutation.CreatedAt(); ok {
+		_spec.SetField(userschema.FieldCreatedAt, field.TypeTime, value)
+	}
+	if value, ok := usu.mutation.UpdatedAt(); ok {
+		_spec.SetField(userschema.FieldUpdatedAt, field.TypeTime, value)
+	}
+	if usu.mutation.RolesCleared() {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.O2M,
+			Inverse: false,
+			Table:   userschema.RolesTable,
+			Columns: []string{userschema.RolesColumn},
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: sqlgraph.NewFieldSpec(roleschema.FieldID, field.TypeInt),
+			},
+		}
+		_spec.Edges.Clear = append(_spec.Edges.Clear, edge)
+	}
+	if nodes := usu.mutation.RemovedRolesIDs(); len(nodes) > 0 && !usu.mutation.RolesCleared() {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.O2M,
+			Inverse: false,
+			Table:   userschema.RolesTable,
+			Columns: []string{userschema.RolesColumn},
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: sqlgraph.NewFieldSpec(roleschema.FieldID, field.TypeInt),
+			},
+		}
+		for _, k := range nodes {
+			edge.Target.Nodes = append(edge.Target.Nodes, k)
+		}
+		_spec.Edges.Clear = append(_spec.Edges.Clear, edge)
+	}
+	if nodes := usu.mutation.RolesIDs(); len(nodes) > 0 {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.O2M,
+			Inverse: false,
+			Table:   userschema.RolesTable,
+			Columns: []string{userschema.RolesColumn},
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: sqlgraph.NewFieldSpec(roleschema.FieldID, field.TypeInt),
+			},
+		}
+		for _, k := range nodes {
+			edge.Target.Nodes = append(edge.Target.Nodes, k)
+		}
+		_spec.Edges.Add = append(_spec.Edges.Add, edge)
+	}
+	if usu.mutation.ProfileCleared() {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.O2O,
+			Inverse: false,
+			Table:   userschema.ProfileTable,
+			Columns: []string{userschema.ProfileColumn},
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: sqlgraph.NewFieldSpec(profileschema.FieldID, field.TypeInt),
+			},
+		}
+		_spec.Edges.Clear = append(_spec.Edges.Clear, edge)
+	}
+	if nodes := usu.mutation.ProfileIDs(); len(nodes) > 0 {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.O2O,
+			Inverse: false,
+			Table:   userschema.ProfileTable,
+			Columns: []string{userschema.ProfileColumn},
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: sqlgraph.NewFieldSpec(profileschema.FieldID, field.TypeInt),
+			},
+		}
+		for _, k := range nodes {
+			edge.Target.Nodes = append(edge.Target.Nodes, k)
+		}
+		_spec.Edges.Add = append(_spec.Edges.Add, edge)
+	}
+	if usu.mutation.FollowCleared() {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.M2O,
+			Inverse: false,
+			Table:   userschema.FollowTable,
+			Columns: []string{userschema.FollowColumn},
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: sqlgraph.NewFieldSpec(followschema.FieldID, field.TypeInt),
+			},
+		}
+		_spec.Edges.Clear = append(_spec.Edges.Clear, edge)
+	}
+	if nodes := usu.mutation.FollowIDs(); len(nodes) > 0 {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.M2O,
+			Inverse: false,
+			Table:   userschema.FollowTable,
+			Columns: []string{userschema.FollowColumn},
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: sqlgraph.NewFieldSpec(followschema.FieldID, field.TypeInt),
+			},
+		}
+		for _, k := range nodes {
+			edge.Target.Nodes = append(edge.Target.Nodes, k)
+		}
+		_spec.Edges.Add = append(_spec.Edges.Add, edge)
+	}
+	if usu.mutation.ReferrerCleared() {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.O2O,
+			Inverse: false,
+			Table:   userschema.ReferrerTable,
+			Columns: []string{userschema.ReferrerColumn},
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: sqlgraph.NewFieldSpec(referrerschema.FieldID, field.TypeInt),
+			},
+		}
+		_spec.Edges.Clear = append(_spec.Edges.Clear, edge)
+	}
+	if nodes := usu.mutation.ReferrerIDs(); len(nodes) > 0 {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.O2O,
+			Inverse: false,
+			Table:   userschema.ReferrerTable,
+			Columns: []string{userschema.ReferrerColumn},
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: sqlgraph.NewFieldSpec(referrerschema.FieldID, field.TypeInt),
+			},
+		}
+		for _, k := range nodes {
+			edge.Target.Nodes = append(edge.Target.Nodes, k)
+		}
+		_spec.Edges.Add = append(_spec.Edges.Add, edge)
+	}
+	if usu.mutation.PersonalizationCleared() {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.O2O,
+			Inverse: false,
+			Table:   userschema.PersonalizationTable,
+			Columns: []string{userschema.PersonalizationColumn},
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: sqlgraph.NewFieldSpec(personalizationschema.FieldID, field.TypeInt),
+			},
+		}
+		_spec.Edges.Clear = append(_spec.Edges.Clear, edge)
+	}
+	if nodes := usu.mutation.PersonalizationIDs(); len(nodes) > 0 {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.O2O,
+			Inverse: false,
+			Table:   userschema.PersonalizationTable,
+			Columns: []string{userschema.PersonalizationColumn},
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: sqlgraph.NewFieldSpec(personalizationschema.FieldID, field.TypeInt),
+			},
+		}
+		for _, k := range nodes {
+			edge.Target.Nodes = append(edge.Target.Nodes, k)
+		}
+		_spec.Edges.Add = append(_spec.Edges.Add, edge)
+	}
+	if usu.mutation.NamecardCleared() {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.O2O,
+			Inverse: false,
+			Table:   userschema.NamecardTable,
+			Columns: []string{userschema.NamecardColumn},
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: sqlgraph.NewFieldSpec(namecardschema.FieldID, field.TypeInt),
+			},
+		}
+		_spec.Edges.Clear = append(_spec.Edges.Clear, edge)
+	}
+	if nodes := usu.mutation.NamecardIDs(); len(nodes) > 0 {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.O2O,
+			Inverse: false,
+			Table:   userschema.NamecardTable,
+			Columns: []string{userschema.NamecardColumn},
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: sqlgraph.NewFieldSpec(namecardschema.FieldID, field.TypeInt),
+			},
+		}
+		for _, k := range nodes {
+			edge.Target.Nodes = append(edge.Target.Nodes, k)
+		}
+		_spec.Edges.Add = append(_spec.Edges.Add, edge)
 	}
 	if n, err = sqlgraph.UpdateNodes(ctx, usu.driver, _spec); err != nil {
 		if _, ok := err.(*sqlgraph.NotFoundError); ok {
@@ -115,6 +525,20 @@ type UserSchemaUpdateOne struct {
 	mutation *UserSchemaMutation
 }
 
+// SetUUID sets the "uuid" field.
+func (usuo *UserSchemaUpdateOne) SetUUID(u uuid.UUID) *UserSchemaUpdateOne {
+	usuo.mutation.SetUUID(u)
+	return usuo
+}
+
+// SetNillableUUID sets the "uuid" field if the given value is not nil.
+func (usuo *UserSchemaUpdateOne) SetNillableUUID(u *uuid.UUID) *UserSchemaUpdateOne {
+	if u != nil {
+		usuo.SetUUID(*u)
+	}
+	return usuo
+}
+
 // SetUsername sets the "username" field.
 func (usuo *UserSchemaUpdateOne) SetUsername(s string) *UserSchemaUpdateOne {
 	usuo.mutation.SetUsername(s)
@@ -133,9 +557,198 @@ func (usuo *UserSchemaUpdateOne) SetEmail(s string) *UserSchemaUpdateOne {
 	return usuo
 }
 
+// SetCreatedAt sets the "createdAt" field.
+func (usuo *UserSchemaUpdateOne) SetCreatedAt(t time.Time) *UserSchemaUpdateOne {
+	usuo.mutation.SetCreatedAt(t)
+	return usuo
+}
+
+// SetNillableCreatedAt sets the "createdAt" field if the given value is not nil.
+func (usuo *UserSchemaUpdateOne) SetNillableCreatedAt(t *time.Time) *UserSchemaUpdateOne {
+	if t != nil {
+		usuo.SetCreatedAt(*t)
+	}
+	return usuo
+}
+
+// SetUpdatedAt sets the "updatedAt" field.
+func (usuo *UserSchemaUpdateOne) SetUpdatedAt(t time.Time) *UserSchemaUpdateOne {
+	usuo.mutation.SetUpdatedAt(t)
+	return usuo
+}
+
+// SetNillableUpdatedAt sets the "updatedAt" field if the given value is not nil.
+func (usuo *UserSchemaUpdateOne) SetNillableUpdatedAt(t *time.Time) *UserSchemaUpdateOne {
+	if t != nil {
+		usuo.SetUpdatedAt(*t)
+	}
+	return usuo
+}
+
+// AddRoleIDs adds the "roles" edge to the RoleSchema entity by IDs.
+func (usuo *UserSchemaUpdateOne) AddRoleIDs(ids ...int) *UserSchemaUpdateOne {
+	usuo.mutation.AddRoleIDs(ids...)
+	return usuo
+}
+
+// AddRoles adds the "roles" edges to the RoleSchema entity.
+func (usuo *UserSchemaUpdateOne) AddRoles(r ...*RoleSchema) *UserSchemaUpdateOne {
+	ids := make([]int, len(r))
+	for i := range r {
+		ids[i] = r[i].ID
+	}
+	return usuo.AddRoleIDs(ids...)
+}
+
+// SetProfileID sets the "profile" edge to the ProfileSchema entity by ID.
+func (usuo *UserSchemaUpdateOne) SetProfileID(id int) *UserSchemaUpdateOne {
+	usuo.mutation.SetProfileID(id)
+	return usuo
+}
+
+// SetNillableProfileID sets the "profile" edge to the ProfileSchema entity by ID if the given value is not nil.
+func (usuo *UserSchemaUpdateOne) SetNillableProfileID(id *int) *UserSchemaUpdateOne {
+	if id != nil {
+		usuo = usuo.SetProfileID(*id)
+	}
+	return usuo
+}
+
+// SetProfile sets the "profile" edge to the ProfileSchema entity.
+func (usuo *UserSchemaUpdateOne) SetProfile(p *ProfileSchema) *UserSchemaUpdateOne {
+	return usuo.SetProfileID(p.ID)
+}
+
+// SetFollowID sets the "follow" edge to the FollowSchema entity by ID.
+func (usuo *UserSchemaUpdateOne) SetFollowID(id int) *UserSchemaUpdateOne {
+	usuo.mutation.SetFollowID(id)
+	return usuo
+}
+
+// SetNillableFollowID sets the "follow" edge to the FollowSchema entity by ID if the given value is not nil.
+func (usuo *UserSchemaUpdateOne) SetNillableFollowID(id *int) *UserSchemaUpdateOne {
+	if id != nil {
+		usuo = usuo.SetFollowID(*id)
+	}
+	return usuo
+}
+
+// SetFollow sets the "follow" edge to the FollowSchema entity.
+func (usuo *UserSchemaUpdateOne) SetFollow(f *FollowSchema) *UserSchemaUpdateOne {
+	return usuo.SetFollowID(f.ID)
+}
+
+// SetReferrerID sets the "referrer" edge to the ReferrerSchema entity by ID.
+func (usuo *UserSchemaUpdateOne) SetReferrerID(id int) *UserSchemaUpdateOne {
+	usuo.mutation.SetReferrerID(id)
+	return usuo
+}
+
+// SetNillableReferrerID sets the "referrer" edge to the ReferrerSchema entity by ID if the given value is not nil.
+func (usuo *UserSchemaUpdateOne) SetNillableReferrerID(id *int) *UserSchemaUpdateOne {
+	if id != nil {
+		usuo = usuo.SetReferrerID(*id)
+	}
+	return usuo
+}
+
+// SetReferrer sets the "referrer" edge to the ReferrerSchema entity.
+func (usuo *UserSchemaUpdateOne) SetReferrer(r *ReferrerSchema) *UserSchemaUpdateOne {
+	return usuo.SetReferrerID(r.ID)
+}
+
+// SetPersonalizationID sets the "personalization" edge to the PersonalizationSchema entity by ID.
+func (usuo *UserSchemaUpdateOne) SetPersonalizationID(id int) *UserSchemaUpdateOne {
+	usuo.mutation.SetPersonalizationID(id)
+	return usuo
+}
+
+// SetNillablePersonalizationID sets the "personalization" edge to the PersonalizationSchema entity by ID if the given value is not nil.
+func (usuo *UserSchemaUpdateOne) SetNillablePersonalizationID(id *int) *UserSchemaUpdateOne {
+	if id != nil {
+		usuo = usuo.SetPersonalizationID(*id)
+	}
+	return usuo
+}
+
+// SetPersonalization sets the "personalization" edge to the PersonalizationSchema entity.
+func (usuo *UserSchemaUpdateOne) SetPersonalization(p *PersonalizationSchema) *UserSchemaUpdateOne {
+	return usuo.SetPersonalizationID(p.ID)
+}
+
+// SetNamecardID sets the "namecard" edge to the NamecardSchema entity by ID.
+func (usuo *UserSchemaUpdateOne) SetNamecardID(id int) *UserSchemaUpdateOne {
+	usuo.mutation.SetNamecardID(id)
+	return usuo
+}
+
+// SetNillableNamecardID sets the "namecard" edge to the NamecardSchema entity by ID if the given value is not nil.
+func (usuo *UserSchemaUpdateOne) SetNillableNamecardID(id *int) *UserSchemaUpdateOne {
+	if id != nil {
+		usuo = usuo.SetNamecardID(*id)
+	}
+	return usuo
+}
+
+// SetNamecard sets the "namecard" edge to the NamecardSchema entity.
+func (usuo *UserSchemaUpdateOne) SetNamecard(n *NamecardSchema) *UserSchemaUpdateOne {
+	return usuo.SetNamecardID(n.ID)
+}
+
 // Mutation returns the UserSchemaMutation object of the builder.
 func (usuo *UserSchemaUpdateOne) Mutation() *UserSchemaMutation {
 	return usuo.mutation
+}
+
+// ClearRoles clears all "roles" edges to the RoleSchema entity.
+func (usuo *UserSchemaUpdateOne) ClearRoles() *UserSchemaUpdateOne {
+	usuo.mutation.ClearRoles()
+	return usuo
+}
+
+// RemoveRoleIDs removes the "roles" edge to RoleSchema entities by IDs.
+func (usuo *UserSchemaUpdateOne) RemoveRoleIDs(ids ...int) *UserSchemaUpdateOne {
+	usuo.mutation.RemoveRoleIDs(ids...)
+	return usuo
+}
+
+// RemoveRoles removes "roles" edges to RoleSchema entities.
+func (usuo *UserSchemaUpdateOne) RemoveRoles(r ...*RoleSchema) *UserSchemaUpdateOne {
+	ids := make([]int, len(r))
+	for i := range r {
+		ids[i] = r[i].ID
+	}
+	return usuo.RemoveRoleIDs(ids...)
+}
+
+// ClearProfile clears the "profile" edge to the ProfileSchema entity.
+func (usuo *UserSchemaUpdateOne) ClearProfile() *UserSchemaUpdateOne {
+	usuo.mutation.ClearProfile()
+	return usuo
+}
+
+// ClearFollow clears the "follow" edge to the FollowSchema entity.
+func (usuo *UserSchemaUpdateOne) ClearFollow() *UserSchemaUpdateOne {
+	usuo.mutation.ClearFollow()
+	return usuo
+}
+
+// ClearReferrer clears the "referrer" edge to the ReferrerSchema entity.
+func (usuo *UserSchemaUpdateOne) ClearReferrer() *UserSchemaUpdateOne {
+	usuo.mutation.ClearReferrer()
+	return usuo
+}
+
+// ClearPersonalization clears the "personalization" edge to the PersonalizationSchema entity.
+func (usuo *UserSchemaUpdateOne) ClearPersonalization() *UserSchemaUpdateOne {
+	usuo.mutation.ClearPersonalization()
+	return usuo
+}
+
+// ClearNamecard clears the "namecard" edge to the NamecardSchema entity.
+func (usuo *UserSchemaUpdateOne) ClearNamecard() *UserSchemaUpdateOne {
+	usuo.mutation.ClearNamecard()
+	return usuo
 }
 
 // Where appends a list predicates to the UserSchemaUpdate builder.
@@ -204,6 +817,9 @@ func (usuo *UserSchemaUpdateOne) sqlSave(ctx context.Context) (_node *UserSchema
 			}
 		}
 	}
+	if value, ok := usuo.mutation.UUID(); ok {
+		_spec.SetField(userschema.FieldUUID, field.TypeUUID, value)
+	}
 	if value, ok := usuo.mutation.Username(); ok {
 		_spec.SetField(userschema.FieldUsername, field.TypeString, value)
 	}
@@ -212,6 +828,202 @@ func (usuo *UserSchemaUpdateOne) sqlSave(ctx context.Context) (_node *UserSchema
 	}
 	if value, ok := usuo.mutation.Email(); ok {
 		_spec.SetField(userschema.FieldEmail, field.TypeString, value)
+	}
+	if value, ok := usuo.mutation.CreatedAt(); ok {
+		_spec.SetField(userschema.FieldCreatedAt, field.TypeTime, value)
+	}
+	if value, ok := usuo.mutation.UpdatedAt(); ok {
+		_spec.SetField(userschema.FieldUpdatedAt, field.TypeTime, value)
+	}
+	if usuo.mutation.RolesCleared() {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.O2M,
+			Inverse: false,
+			Table:   userschema.RolesTable,
+			Columns: []string{userschema.RolesColumn},
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: sqlgraph.NewFieldSpec(roleschema.FieldID, field.TypeInt),
+			},
+		}
+		_spec.Edges.Clear = append(_spec.Edges.Clear, edge)
+	}
+	if nodes := usuo.mutation.RemovedRolesIDs(); len(nodes) > 0 && !usuo.mutation.RolesCleared() {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.O2M,
+			Inverse: false,
+			Table:   userschema.RolesTable,
+			Columns: []string{userschema.RolesColumn},
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: sqlgraph.NewFieldSpec(roleschema.FieldID, field.TypeInt),
+			},
+		}
+		for _, k := range nodes {
+			edge.Target.Nodes = append(edge.Target.Nodes, k)
+		}
+		_spec.Edges.Clear = append(_spec.Edges.Clear, edge)
+	}
+	if nodes := usuo.mutation.RolesIDs(); len(nodes) > 0 {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.O2M,
+			Inverse: false,
+			Table:   userschema.RolesTable,
+			Columns: []string{userschema.RolesColumn},
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: sqlgraph.NewFieldSpec(roleschema.FieldID, field.TypeInt),
+			},
+		}
+		for _, k := range nodes {
+			edge.Target.Nodes = append(edge.Target.Nodes, k)
+		}
+		_spec.Edges.Add = append(_spec.Edges.Add, edge)
+	}
+	if usuo.mutation.ProfileCleared() {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.O2O,
+			Inverse: false,
+			Table:   userschema.ProfileTable,
+			Columns: []string{userschema.ProfileColumn},
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: sqlgraph.NewFieldSpec(profileschema.FieldID, field.TypeInt),
+			},
+		}
+		_spec.Edges.Clear = append(_spec.Edges.Clear, edge)
+	}
+	if nodes := usuo.mutation.ProfileIDs(); len(nodes) > 0 {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.O2O,
+			Inverse: false,
+			Table:   userschema.ProfileTable,
+			Columns: []string{userschema.ProfileColumn},
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: sqlgraph.NewFieldSpec(profileschema.FieldID, field.TypeInt),
+			},
+		}
+		for _, k := range nodes {
+			edge.Target.Nodes = append(edge.Target.Nodes, k)
+		}
+		_spec.Edges.Add = append(_spec.Edges.Add, edge)
+	}
+	if usuo.mutation.FollowCleared() {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.M2O,
+			Inverse: false,
+			Table:   userschema.FollowTable,
+			Columns: []string{userschema.FollowColumn},
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: sqlgraph.NewFieldSpec(followschema.FieldID, field.TypeInt),
+			},
+		}
+		_spec.Edges.Clear = append(_spec.Edges.Clear, edge)
+	}
+	if nodes := usuo.mutation.FollowIDs(); len(nodes) > 0 {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.M2O,
+			Inverse: false,
+			Table:   userschema.FollowTable,
+			Columns: []string{userschema.FollowColumn},
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: sqlgraph.NewFieldSpec(followschema.FieldID, field.TypeInt),
+			},
+		}
+		for _, k := range nodes {
+			edge.Target.Nodes = append(edge.Target.Nodes, k)
+		}
+		_spec.Edges.Add = append(_spec.Edges.Add, edge)
+	}
+	if usuo.mutation.ReferrerCleared() {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.O2O,
+			Inverse: false,
+			Table:   userschema.ReferrerTable,
+			Columns: []string{userschema.ReferrerColumn},
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: sqlgraph.NewFieldSpec(referrerschema.FieldID, field.TypeInt),
+			},
+		}
+		_spec.Edges.Clear = append(_spec.Edges.Clear, edge)
+	}
+	if nodes := usuo.mutation.ReferrerIDs(); len(nodes) > 0 {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.O2O,
+			Inverse: false,
+			Table:   userschema.ReferrerTable,
+			Columns: []string{userschema.ReferrerColumn},
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: sqlgraph.NewFieldSpec(referrerschema.FieldID, field.TypeInt),
+			},
+		}
+		for _, k := range nodes {
+			edge.Target.Nodes = append(edge.Target.Nodes, k)
+		}
+		_spec.Edges.Add = append(_spec.Edges.Add, edge)
+	}
+	if usuo.mutation.PersonalizationCleared() {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.O2O,
+			Inverse: false,
+			Table:   userschema.PersonalizationTable,
+			Columns: []string{userschema.PersonalizationColumn},
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: sqlgraph.NewFieldSpec(personalizationschema.FieldID, field.TypeInt),
+			},
+		}
+		_spec.Edges.Clear = append(_spec.Edges.Clear, edge)
+	}
+	if nodes := usuo.mutation.PersonalizationIDs(); len(nodes) > 0 {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.O2O,
+			Inverse: false,
+			Table:   userschema.PersonalizationTable,
+			Columns: []string{userschema.PersonalizationColumn},
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: sqlgraph.NewFieldSpec(personalizationschema.FieldID, field.TypeInt),
+			},
+		}
+		for _, k := range nodes {
+			edge.Target.Nodes = append(edge.Target.Nodes, k)
+		}
+		_spec.Edges.Add = append(_spec.Edges.Add, edge)
+	}
+	if usuo.mutation.NamecardCleared() {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.O2O,
+			Inverse: false,
+			Table:   userschema.NamecardTable,
+			Columns: []string{userschema.NamecardColumn},
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: sqlgraph.NewFieldSpec(namecardschema.FieldID, field.TypeInt),
+			},
+		}
+		_spec.Edges.Clear = append(_spec.Edges.Clear, edge)
+	}
+	if nodes := usuo.mutation.NamecardIDs(); len(nodes) > 0 {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.O2O,
+			Inverse: false,
+			Table:   userschema.NamecardTable,
+			Columns: []string{userschema.NamecardColumn},
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: sqlgraph.NewFieldSpec(namecardschema.FieldID, field.TypeInt),
+			},
+		}
+		for _, k := range nodes {
+			edge.Target.Nodes = append(edge.Target.Nodes, k)
+		}
+		_spec.Edges.Add = append(_spec.Edges.Add, edge)
 	}
 	_node = &UserSchema{config: usuo.config}
 	_spec.Assign = _node.assignValues

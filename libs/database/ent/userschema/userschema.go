@@ -3,7 +3,11 @@
 package userschema
 
 import (
+	"time"
+
 	"entgo.io/ent/dialect/sql"
+	"entgo.io/ent/dialect/sql/sqlgraph"
+	"github.com/google/uuid"
 )
 
 const (
@@ -11,22 +15,91 @@ const (
 	Label = "user_schema"
 	// FieldID holds the string denoting the id field in the database.
 	FieldID = "id"
+	// FieldUUID holds the string denoting the uuid field in the database.
+	FieldUUID = "uuid"
 	// FieldUsername holds the string denoting the username field in the database.
 	FieldUsername = "username"
 	// FieldPassword holds the string denoting the password field in the database.
 	FieldPassword = "password"
 	// FieldEmail holds the string denoting the email field in the database.
 	FieldEmail = "email"
+	// FieldCreatedAt holds the string denoting the createdat field in the database.
+	FieldCreatedAt = "created_at"
+	// FieldUpdatedAt holds the string denoting the updatedat field in the database.
+	FieldUpdatedAt = "updated_at"
+	// EdgeRoles holds the string denoting the roles edge name in mutations.
+	EdgeRoles = "roles"
+	// EdgeProfile holds the string denoting the profile edge name in mutations.
+	EdgeProfile = "profile"
+	// EdgeFollow holds the string denoting the follow edge name in mutations.
+	EdgeFollow = "follow"
+	// EdgeReferrer holds the string denoting the referrer edge name in mutations.
+	EdgeReferrer = "referrer"
+	// EdgePersonalization holds the string denoting the personalization edge name in mutations.
+	EdgePersonalization = "personalization"
+	// EdgeNamecard holds the string denoting the namecard edge name in mutations.
+	EdgeNamecard = "namecard"
 	// Table holds the table name of the userschema in the database.
 	Table = "User"
+	// RolesTable is the table that holds the roles relation/edge.
+	RolesTable = "Role"
+	// RolesInverseTable is the table name for the RoleSchema entity.
+	// It exists in this package in order to avoid circular dependency with the "roleschema" package.
+	RolesInverseTable = "Role"
+	// RolesColumn is the table column denoting the roles relation/edge.
+	RolesColumn = "user_schema_roles"
+	// ProfileTable is the table that holds the profile relation/edge.
+	ProfileTable = "Profile"
+	// ProfileInverseTable is the table name for the ProfileSchema entity.
+	// It exists in this package in order to avoid circular dependency with the "profileschema" package.
+	ProfileInverseTable = "Profile"
+	// ProfileColumn is the table column denoting the profile relation/edge.
+	ProfileColumn = "user_schema_profile"
+	// FollowTable is the table that holds the follow relation/edge.
+	FollowTable = "User"
+	// FollowInverseTable is the table name for the FollowSchema entity.
+	// It exists in this package in order to avoid circular dependency with the "followschema" package.
+	FollowInverseTable = "Follow"
+	// FollowColumn is the table column denoting the follow relation/edge.
+	FollowColumn = "user_schema_follow"
+	// ReferrerTable is the table that holds the referrer relation/edge.
+	ReferrerTable = "Referrer"
+	// ReferrerInverseTable is the table name for the ReferrerSchema entity.
+	// It exists in this package in order to avoid circular dependency with the "referrerschema" package.
+	ReferrerInverseTable = "Referrer"
+	// ReferrerColumn is the table column denoting the referrer relation/edge.
+	ReferrerColumn = "user_schema_referrer"
+	// PersonalizationTable is the table that holds the personalization relation/edge.
+	PersonalizationTable = "Personalization"
+	// PersonalizationInverseTable is the table name for the PersonalizationSchema entity.
+	// It exists in this package in order to avoid circular dependency with the "personalizationschema" package.
+	PersonalizationInverseTable = "Personalization"
+	// PersonalizationColumn is the table column denoting the personalization relation/edge.
+	PersonalizationColumn = "user_schema_personalization"
+	// NamecardTable is the table that holds the namecard relation/edge.
+	NamecardTable = "Namecard"
+	// NamecardInverseTable is the table name for the NamecardSchema entity.
+	// It exists in this package in order to avoid circular dependency with the "namecardschema" package.
+	NamecardInverseTable = "Namecard"
+	// NamecardColumn is the table column denoting the namecard relation/edge.
+	NamecardColumn = "user_schema_namecard"
 )
 
 // Columns holds all SQL columns for userschema fields.
 var Columns = []string{
 	FieldID,
+	FieldUUID,
 	FieldUsername,
 	FieldPassword,
 	FieldEmail,
+	FieldCreatedAt,
+	FieldUpdatedAt,
+}
+
+// ForeignKeys holds the SQL foreign-keys that are owned by the "User"
+// table and are not defined as standalone fields in the schema.
+var ForeignKeys = []string{
+	"user_schema_follow",
 }
 
 // ValidColumn reports if the column name is valid (part of the table columns).
@@ -36,8 +109,22 @@ func ValidColumn(column string) bool {
 			return true
 		}
 	}
+	for i := range ForeignKeys {
+		if column == ForeignKeys[i] {
+			return true
+		}
+	}
 	return false
 }
+
+var (
+	// DefaultUUID holds the default value on creation for the "uuid" field.
+	DefaultUUID func() uuid.UUID
+	// DefaultCreatedAt holds the default value on creation for the "createdAt" field.
+	DefaultCreatedAt func() time.Time
+	// DefaultUpdatedAt holds the default value on creation for the "updatedAt" field.
+	DefaultUpdatedAt func() time.Time
+)
 
 // OrderOption defines the ordering options for the UserSchema queries.
 type OrderOption func(*sql.Selector)
@@ -45,6 +132,11 @@ type OrderOption func(*sql.Selector)
 // ByID orders the results by the id field.
 func ByID(opts ...sql.OrderTermOption) OrderOption {
 	return sql.OrderByField(FieldID, opts...).ToFunc()
+}
+
+// ByUUID orders the results by the uuid field.
+func ByUUID(opts ...sql.OrderTermOption) OrderOption {
+	return sql.OrderByField(FieldUUID, opts...).ToFunc()
 }
 
 // ByUsername orders the results by the username field.
@@ -60,4 +152,105 @@ func ByPassword(opts ...sql.OrderTermOption) OrderOption {
 // ByEmail orders the results by the email field.
 func ByEmail(opts ...sql.OrderTermOption) OrderOption {
 	return sql.OrderByField(FieldEmail, opts...).ToFunc()
+}
+
+// ByCreatedAt orders the results by the createdAt field.
+func ByCreatedAt(opts ...sql.OrderTermOption) OrderOption {
+	return sql.OrderByField(FieldCreatedAt, opts...).ToFunc()
+}
+
+// ByUpdatedAt orders the results by the updatedAt field.
+func ByUpdatedAt(opts ...sql.OrderTermOption) OrderOption {
+	return sql.OrderByField(FieldUpdatedAt, opts...).ToFunc()
+}
+
+// ByRolesCount orders the results by roles count.
+func ByRolesCount(opts ...sql.OrderTermOption) OrderOption {
+	return func(s *sql.Selector) {
+		sqlgraph.OrderByNeighborsCount(s, newRolesStep(), opts...)
+	}
+}
+
+// ByRoles orders the results by roles terms.
+func ByRoles(term sql.OrderTerm, terms ...sql.OrderTerm) OrderOption {
+	return func(s *sql.Selector) {
+		sqlgraph.OrderByNeighborTerms(s, newRolesStep(), append([]sql.OrderTerm{term}, terms...)...)
+	}
+}
+
+// ByProfileField orders the results by profile field.
+func ByProfileField(field string, opts ...sql.OrderTermOption) OrderOption {
+	return func(s *sql.Selector) {
+		sqlgraph.OrderByNeighborTerms(s, newProfileStep(), sql.OrderByField(field, opts...))
+	}
+}
+
+// ByFollowField orders the results by follow field.
+func ByFollowField(field string, opts ...sql.OrderTermOption) OrderOption {
+	return func(s *sql.Selector) {
+		sqlgraph.OrderByNeighborTerms(s, newFollowStep(), sql.OrderByField(field, opts...))
+	}
+}
+
+// ByReferrerField orders the results by referrer field.
+func ByReferrerField(field string, opts ...sql.OrderTermOption) OrderOption {
+	return func(s *sql.Selector) {
+		sqlgraph.OrderByNeighborTerms(s, newReferrerStep(), sql.OrderByField(field, opts...))
+	}
+}
+
+// ByPersonalizationField orders the results by personalization field.
+func ByPersonalizationField(field string, opts ...sql.OrderTermOption) OrderOption {
+	return func(s *sql.Selector) {
+		sqlgraph.OrderByNeighborTerms(s, newPersonalizationStep(), sql.OrderByField(field, opts...))
+	}
+}
+
+// ByNamecardField orders the results by namecard field.
+func ByNamecardField(field string, opts ...sql.OrderTermOption) OrderOption {
+	return func(s *sql.Selector) {
+		sqlgraph.OrderByNeighborTerms(s, newNamecardStep(), sql.OrderByField(field, opts...))
+	}
+}
+func newRolesStep() *sqlgraph.Step {
+	return sqlgraph.NewStep(
+		sqlgraph.From(Table, FieldID),
+		sqlgraph.To(RolesInverseTable, FieldID),
+		sqlgraph.Edge(sqlgraph.O2M, false, RolesTable, RolesColumn),
+	)
+}
+func newProfileStep() *sqlgraph.Step {
+	return sqlgraph.NewStep(
+		sqlgraph.From(Table, FieldID),
+		sqlgraph.To(ProfileInverseTable, FieldID),
+		sqlgraph.Edge(sqlgraph.O2O, false, ProfileTable, ProfileColumn),
+	)
+}
+func newFollowStep() *sqlgraph.Step {
+	return sqlgraph.NewStep(
+		sqlgraph.From(Table, FieldID),
+		sqlgraph.To(FollowInverseTable, FieldID),
+		sqlgraph.Edge(sqlgraph.M2O, false, FollowTable, FollowColumn),
+	)
+}
+func newReferrerStep() *sqlgraph.Step {
+	return sqlgraph.NewStep(
+		sqlgraph.From(Table, FieldID),
+		sqlgraph.To(ReferrerInverseTable, FieldID),
+		sqlgraph.Edge(sqlgraph.O2O, false, ReferrerTable, ReferrerColumn),
+	)
+}
+func newPersonalizationStep() *sqlgraph.Step {
+	return sqlgraph.NewStep(
+		sqlgraph.From(Table, FieldID),
+		sqlgraph.To(PersonalizationInverseTable, FieldID),
+		sqlgraph.Edge(sqlgraph.O2O, false, PersonalizationTable, PersonalizationColumn),
+	)
+}
+func newNamecardStep() *sqlgraph.Step {
+	return sqlgraph.NewStep(
+		sqlgraph.From(Table, FieldID),
+		sqlgraph.To(NamecardInverseTable, FieldID),
+		sqlgraph.Edge(sqlgraph.O2O, false, NamecardTable, NamecardColumn),
+	)
 }
