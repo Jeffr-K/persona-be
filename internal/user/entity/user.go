@@ -3,35 +3,34 @@ package entity
 import (
 	"log"
 	"persona/internal/user/port"
+	comm "persona/internal/user/repository/command"
+	"persona/libs/database"
 	"persona/libs/security"
-	"time"
 )
 
 type User struct {
-	ID        uint
-	Username  string
-	Password  string
-	Email     string
-	Address   string
-	CreatedAt time.Time
-	UpdatedAt time.Time
+	Username string
+	Password string
+	Email    string
 }
 
-func (root User) Register(command *port.UserRegisterInBoundPort) (User, error) {
+func (root User) Register(command *port.UserRegisterInBoundPort) error {
 	hashedPassword, err := security.NewBCrypt().HashingPassword(command.Password)
 	if err != nil {
 		log.Fatalln("Password Hashing error: ", err)
-		return User{}, err
+		return err
 	}
 
 	user := User{
 		Username: command.Username,
 		Password: hashedPassword,
 		Email:    command.Email,
-		Address:  command.Address,
 	}
 
-	return user, nil
+	repo := comm.NewCommandRepository(database.Client)
+	repo.SaveTo(&user)
+
+	return nil
 }
 
 func (root User) Dropdown(command *port.UserDropdownInBoundPort) (User, error) {

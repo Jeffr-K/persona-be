@@ -2,8 +2,8 @@ package command
 
 import (
 	"context"
-	"iam/internal/user/entity"
-	"iam/libs/database/ent"
+	"persona/internal/user/entity"
+	"persona/libs/database/ent"
 )
 
 type UserCommandRepository interface {

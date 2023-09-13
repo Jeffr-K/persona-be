@@ -24,7 +24,6 @@ func main() {
 	//if err := q.Produce("찌혜얌, 닥꼬기 맛이께 머겅 내사룽. "); err != nil {
 	//	fmt.Println("에러얌얌")
 	//}
-
 	server.GET("/api/docs/*", echoSwagger.WrapHandler)
 
 	server.Logger.Fatal(server.Start(":8080"))

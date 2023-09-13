@@ -2,9 +2,9 @@ package service
 
 import (
 	"fmt"
-	"iam/internal/user/entity"
-	"iam/internal/user/repository/query"
-	"iam/libs/database"
+	"persona/internal/user/entity"
+	"persona/internal/user/repository/query"
+	"persona/libs/database"
 )
 
 type UserExternalService struct{}

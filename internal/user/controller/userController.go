@@ -8,7 +8,11 @@ import (
 )
 
 type UserController struct {
-	userUseCase usecase.UserUseCase
+	userUseCase *usecase.UserUseCase
+}
+
+func NewUserController(userUseCase *usecase.UserUseCase) *UserController {
+	return &UserController{userUseCase: userUseCase}
 }
 
 func (c UserController) Register(context echo.Context) error {
