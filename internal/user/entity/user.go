@@ -2,35 +2,60 @@ package entity
 
 import (
 	"log"
+	commandBus "persona/internal/user/event/bus"
 	"persona/internal/user/port"
-	comm "persona/internal/user/repository/command"
-	"persona/libs/database"
 	"persona/libs/security"
+	"time"
 )
 
-type User struct {
-	Username string
-	Password string
-	Email    string
+type UserSpecification interface {
+	Register(command *port.UserRegisterInBoundPort) error
 }
 
-func (root User) Register(command *port.UserRegisterInBoundPort) error {
-	hashedPassword, err := security.NewBCrypt().HashingPassword(command.Password)
+type User struct {
+	Username  string
+	Password  string
+	Email     string
+	CreatedAt time.Time
+	UpdatedAt time.Time
+}
+
+func New(username, password, email string) *User {
+	return &User{
+		Username:  username,
+		Password:  password,
+		Email:     email,
+		CreatedAt: time.Now(),
+		UpdatedAt: time.Now(),
+	}
+}
+
+func (root User) Register(command *port.UserRegisterInBoundPort) (*User, error) {
+	password, err := hashPassword(command.Password)
 	if err != nil {
-		log.Fatalln("Password Hashing error: ", err)
-		return err
+		return &User{}, err
 	}
 
-	user := User{
+	user := &User{
 		Username: command.Username,
-		Password: hashedPassword,
+		Password: password,
 		Email:    command.Email,
 	}
 
-	repo := comm.NewCommandRepository(database.Client)
-	repo.SaveTo(&user)
+	//registerCommandEvent := make(chan string)
+	bus := commandBus.New()
+	go bus.Publish("RegistrationUserMembershipEvent", user)
 
-	return nil
+	return user, nil
+}
+
+func hashPassword(password string) (string, error) {
+	hashedPassword, err := security.NewBCrypt().HashingPassword(password)
+	if err != nil {
+		log.Fatalln("Password Hashing error: ", err)
+		return "", err
+	}
+	return hashedPassword, nil
 }
 
 func (root User) Dropdown(command *port.UserDropdownInBoundPort) (User, error) {

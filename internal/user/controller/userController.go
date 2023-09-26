@@ -3,7 +3,7 @@ package controller
 import (
 	"github.com/labstack/echo/v4"
 	"net/http"
-	adapter "persona/internal/user/adapter/in"
+	in2 "persona/internal/user/adapter/in"
 	"persona/internal/user/usecase"
 )
 
@@ -16,7 +16,7 @@ func NewUserController(userUseCase *usecase.UserUseCase) *UserController {
 }
 
 func (c UserController) Register(context echo.Context) error {
-	command := adapter.UserRegisterCommand{}
+	command := in2.UserRegisterCommand{}
 
 	if err := context.Bind(&command); err != nil {
 		return context.JSON(http.StatusBadRequest, "입력값이 잘못되었습니다.")
@@ -30,7 +30,7 @@ func (c UserController) Register(context echo.Context) error {
 }
 
 func (c UserController) Dropdown(context echo.Context) error {
-	command := adapter.UserDropdownCommand{}
+	command := in2.UserDropdownCommand{}
 
 	if err := context.Bind(&command); err != nil {
 		return context.JSON(http.StatusBadRequest, "입력값이 잘못되었습니다.")

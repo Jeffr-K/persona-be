@@ -2,6 +2,7 @@ package command
 
 import (
 	"context"
+	"fmt"
 	"persona/internal/user/entity"
 	"persona/libs/database/ent"
 )
@@ -32,17 +33,18 @@ func (r *repository) SaveTo(user *entity.User) error {
 		SetEmail(user.Email).
 		Save(r.ctx)
 
+	fmt.Println(err)
 	return err
 }
 
 func (r *repository) UpdateTo(user *entity.User) error {
-	_, err := r.client.UserSchema.
-		UpdateOneID(int(user.ID)).
-		SetUsername(user.Username).
-		SetPassword(user.Password).
-		Save(r.ctx)
+	//_, err := r.client.UserSchema.
+	//	UpdateOneID(int(user.ID)).
+	//	SetUsername(user.Username).
+	//	SetPassword(user.Password).
+	//	Save(r.ctx)
 
-	return err
+	return nil
 }
 
 func (r *repository) DeleteTo(userId int) error {
