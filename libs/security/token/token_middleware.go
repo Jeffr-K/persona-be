@@ -3,33 +3,9 @@ package token
 import (
 	"fmt"
 	"github.com/labstack/echo/v4"
-	"github.com/labstack/echo/v4/middleware"
+	"persona/internal/user/service"
+	"persona/libs/database/redis"
 )
-
-var JwtMiddlewareConfig = middleware.JWTConfig{
-	Skipper:                 nil,
-	BeforeFunc:              nil,
-	SuccessHandler:          nil,
-	ErrorHandler:            nil,
-	ErrorHandlerWithContext: nil,
-	ContinueOnIgnoredError:  false,
-	SigningKey:              nil,
-	SigningKeys:             nil,
-	SigningMethod:           "",
-	ContextKey:              "",
-	Claims:                  nil,
-	TokenLookup:             "",
-	TokenLookupFuncs:        nil,
-	AuthScheme:              "",
-	KeyFunc:                 nil,
-	ParseTokenFunc:          nil,
-}
-
-//func JwtParseErrorHandler(context echo.Context, err error) middleware.JWTErrorHandler {
-//	return func(c echo.Context, err error) error {
-//		return err
-//	}
-//}
 
 func JwtTokenParser(next echo.HandlerFunc) echo.HandlerFunc {
 	return func(context echo.Context) error {
@@ -56,8 +32,34 @@ func BearerTokenParser(next echo.HandlerFunc) echo.HandlerFunc {
 
 		token := header[7:]
 
-		// Redis 에 저장되어 있는 애랑 매치해서 맞으면 next 아니면 Err
-		fmt.Println("token: ", token)
+		redisRepository := redis.NewRedisRepository()
+		data, err := redisRepository.Get("wjdrlrkdl3@gmail.com")
+		if err != nil {
+			return err
+		}
+
+		storedAccessToken := data.AccessToken
+		//refreshToken := data.RefreshToken
+
+		if storedAccessToken != token {
+			return echo.ErrUnauthorized
+		}
+
+		tokenFactory := NewToken()
+		claim, err := tokenFactory.DecodeJwtToken(token)
+		if err != nil {
+			return err
+		}
+
+		email := claim.Email
+
+		userService := service.NewUserService()
+		user, err := userService.FindOneByEmail(email)
+		if err != nil {
+			return err
+		}
+
+		context.Set("user", user)
 
 		return next(context)
 	}

@@ -1,11 +1,13 @@
 package controller
 
 import (
+	"fmt"
 	"github.com/labstack/echo/v4"
 	"net/http"
 	inbound "persona/internal/user/adapter/in"
 	inboundPort "persona/internal/user/port"
 	"persona/internal/user/usecase"
+	"persona/libs/utils"
 	"strconv"
 )
 
@@ -18,6 +20,12 @@ func NewAuthController(usecase *usecase.AuthUseCase) *AuthController {
 }
 
 func (c AuthController) Login(context echo.Context) error {
+	user, err := utils.ExtractUserFromContext(context)
+	if err != nil {
+		return err
+	}
+	fmt.Println("user: >>>", user)
+
 	command := inbound.UserLoginCommand{}
 
 	if err := context.Bind(&command); err != nil {

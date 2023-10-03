@@ -14,10 +14,10 @@ type IRedis interface {
 	RedisClientConnection() (*redis.Client, error)
 	Insert(key string, value map[string]interface{}) error
 	Delete(key string) error
+	Get(key string) (*Response, error)
 }
 
-type Redis struct {
-}
+type Redis struct{}
 
 func NewRedisRepository() IRedis {
 	return &Redis{}
@@ -32,7 +32,6 @@ func InitializeRedis() {
 	pong, err := Client.Ping(context.Background()).Result()
 	if err != nil {
 		log.Fatalln("\n[Redis Connection Error]\n", err)
-		panic(err)
 	}
 
 	fmt.Println("\n[Redis Connection Success]\n", pong)
@@ -48,7 +47,6 @@ func (r Redis) RedisClientConnection() (*redis.Client, error) {
 	_, err := client.Ping(context.Background()).Result()
 	if err != nil {
 		log.Fatalln("\n[Redis Connection Error]\n", err)
-		panic(err)
 	}
 
 	return client, nil
@@ -97,4 +95,43 @@ func (r Redis) Delete(key string) error {
 
 	fmt.Println("Data deleted from Redis successfully.")
 	return nil
+}
+
+type Response struct {
+	AccessToken  string
+	RefreshToken string
+}
+
+func (r Redis) Get(key string) (*Response, error) {
+	client, err := r.RedisClientConnection()
+	if err != nil {
+		return nil, err
+	}
+
+	defer func(client *redis.Client) {
+		err := client.Close()
+		if err != nil {
+			fmt.Println("Redis is not closed yet.")
+		}
+	}(client)
+
+	data, err := client.Get(context.Background(), key).Result()
+	if err != nil {
+		if err == redis.Nil {
+			return nil, fmt.Errorf("key not found")
+		}
+		return nil, err
+	}
+
+	var result map[string]string
+	if err := json2.Unmarshal([]byte(data), &result); err != nil {
+		return nil, err
+	}
+
+	response := Response{
+		AccessToken:  result["accessToken"],
+		RefreshToken: result["refreshToken"],
+	}
+
+	return &response, nil
 }

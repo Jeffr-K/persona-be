@@ -33,24 +33,25 @@ func (au AuthUseCase) Login(command *inbound.UserLoginCommand) (interface{}, err
 		return out.BusinessResponse{}, fmt.Errorf("user password is wrong. %v", err)
 	}
 
-	token := token.NewToken()
+	tokenFactory := token.NewToken()
 
-	accessToken, err := token.GenerateJwtAccessToken(user.ID)
+	accessToken, err := tokenFactory.GenerateJwtAccessToken(user.Email)
 	if err != nil {
 		return out.BusinessResponse{}, fmt.Errorf("cannot make user access token. %v", err)
 	}
 
-	refreshToken, err := token.GenerateJwtRefreshToken(user.ID)
+	refreshToken, err := tokenFactory.GenerateJwtRefreshToken(user.Email)
 	if err != nil {
 		return out.BusinessResponse{}, fmt.Errorf("cannot make user refresh token. %v", err)
 	}
 
+	// to
 	tokens := make(map[string]interface{})
 	tokens["accessToken"] = accessToken
 	tokens["refreshToken"] = refreshToken
 
 	redisRepository := redis.NewRedisRepository()
-	if err = redisRepository.Insert(strconv.Itoa(user.ID), tokens); err != nil {
+	if err = redisRepository.Insert(user.Email, tokens); err != nil {
 		fmt.Println("cannot insert into redis.")
 		return out.BusinessResponse{}, fmt.Errorf("cannot make user refresh token. %v", err)
 	}
