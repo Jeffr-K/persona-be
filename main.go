@@ -19,7 +19,7 @@ func main() {
 
 	config.Application{}.BootStrap(server)
 
-	//q := queue.Queue{}
+	//q := kafka.Queue{}
 	//
 	//if err := q.Produce("찌혜얌, 닥꼬기 맛이께 머겅 내사룽. "); err != nil {
 	//	fmt.Println("에러얌얌")

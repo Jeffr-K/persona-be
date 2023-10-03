@@ -15,7 +15,7 @@ func (app Application) BootStrap(echo *echo.Echo) {
 	app.registerMiddleware(echo)
 	database.InitializeDatabase()
 	redis.InitializeRedis()
-	//queue.InitializeKafka()
+	//kafka.InitializeKafka()
 }
 
 func (app Application) registerModules(server *echo.Echo) {

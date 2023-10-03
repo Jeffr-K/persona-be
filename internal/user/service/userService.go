@@ -2,37 +2,58 @@ package service
 
 import (
 	"fmt"
+	"golang.org/x/crypto/bcrypt"
 	"persona/internal/user/entity"
 	"persona/internal/user/repository/query"
 	"persona/libs/database"
 )
 
-type UserExternalService struct{}
+type userService struct{}
 
-func (ex UserExternalService) FindOneBy(userId int) (domain.User, error) {
+func NewUserService() *userService {
+	return &userService{}
+}
+
+func (ex userService) FindOneBy(userId int) (entity.User, error) {
 	repository := query.NewQueryRepository(database.Client)
 
 	user, err := repository.GetTo(userId)
 	if err != nil {
 		fmt.Println("ERROR: Not found a user")
-		return domain.User{}, err
+		return entity.User{}, err
 	}
 
 	return user, nil
 }
 
-func (ex UserExternalService) FindAll() ([]domain.User, error) {
+func (ex userService) FindOneByEmail(email string) (entity.User, error) {
+	repository := query.NewQueryRepository(database.Client)
+	user, err := repository.GetByEmail(email)
+	if err != nil {
+		fmt.Println("ERROR: Not found a user")
+		return entity.User{}, err
+	}
+
+	return user, nil
+}
+
+func (ex userService) FindAll() ([]entity.User, error) {
 	repository := query.NewQueryRepository(database.Client)
 
 	list, err := repository.GetAllList()
 	if err != nil {
 		fmt.Println("ERROR: Not found a user")
-		return []domain.User{}, err
+		return []entity.User{}, err
 	}
 
 	return list, nil
 }
 
-func (ex UserExternalService) FindAllBy() []domain.User {
-	return []domain.User{}
+func (ex userService) FindAllBy() []entity.User {
+	return []entity.User{}
+}
+
+func Match(origin, input string) bool {
+	err := bcrypt.CompareHashAndPassword([]byte(origin), []byte(input))
+	return err == nil
 }

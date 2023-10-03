@@ -3,21 +3,29 @@ package presentor
 import (
 	"github.com/labstack/echo/v4"
 	"persona/internal/user/controller"
+	"persona/libs/security/token"
 )
 
 type AuthRoutes struct {
-	authController controller.AuthController
+	authController  controller.AuthController
+	tokenController controller.TokenController
 }
 
-func NewAuthRoutes(controller controller.AuthController) AuthRoutes {
+func NewAuthRoutes(
+	userController controller.AuthController,
+	tokenController controller.TokenController,
+) AuthRoutes {
 	return AuthRoutes{
-		authController: controller,
+		authController:  userController,
+		tokenController: tokenController,
 	}
 }
 
 func (a AuthRoutes) InitializeRoutes(route *echo.Echo) {
 	auth := route.Group("/auth")
 
-	auth.POST("/", a.authController.Login)
-	auth.DELETE("/", a.authController.Logout)
+	auth.POST("/login", token.BearerTokenParser(a.authController.Login))
+	auth.DELETE("/logout", a.authController.Logout)
+
+	auth.POST("/token/reissue", a.tokenController.ReIssue)
 }

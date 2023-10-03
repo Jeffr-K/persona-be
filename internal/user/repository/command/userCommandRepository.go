@@ -31,6 +31,8 @@ func (r *repository) SaveTo(user *entity.User) error {
 		SetUsername(user.Username).
 		SetPassword(user.Password).
 		SetEmail(user.Email).
+		SetCreatedAt(user.CreatedAt).
+		SetUpdatedAt(user.UpdatedAt).
 		Save(r.ctx)
 
 	fmt.Println(err)

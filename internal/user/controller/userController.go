@@ -3,8 +3,10 @@ package controller
 import (
 	"github.com/labstack/echo/v4"
 	"net/http"
-	in2 "persona/internal/user/adapter/in"
+	inbound "persona/internal/user/adapter/in"
+	"persona/internal/user/entity"
 	"persona/internal/user/usecase"
+	"strconv"
 )
 
 type UserController struct {
@@ -16,7 +18,7 @@ func NewUserController(userUseCase *usecase.UserUseCase) *UserController {
 }
 
 func (c UserController) Register(context echo.Context) error {
-	command := in2.UserRegisterCommand{}
+	command := inbound.UserRegisterCommand{}
 
 	if err := context.Bind(&command); err != nil {
 		return context.JSON(http.StatusBadRequest, "입력값이 잘못되었습니다.")
@@ -30,15 +32,42 @@ func (c UserController) Register(context echo.Context) error {
 }
 
 func (c UserController) Dropdown(context echo.Context) error {
-	command := in2.UserDropdownCommand{}
-
-	if err := context.Bind(&command); err != nil {
-		return context.JSON(http.StatusBadRequest, "입력값이 잘못되었습니다.")
+	id, err := strconv.Atoi(context.Param("userId"))
+	if err != nil {
+		return context.JSON(http.StatusBadRequest, "Path Parameter 요청 값이 잘못되었습니다.")
 	}
+
+	command := inbound.UserDropdownCommand{ID: id}
 
 	if result := c.userUseCase.DropdownMembership(&command); result != nil {
 		return context.JSON(http.StatusInternalServerError, "서버 내부에서 에러가 발생하였습니다.")
 	}
 
-	return context.JSON(http.StatusOK, context.JSON(http.StatusOK, "회원탈퇴가 정상적으로 완료되었습니다."))
+	return context.JSON(http.StatusCreated, context.JSON(http.StatusOK, "회원탈퇴가 정상적으로 완료되었습니다."))
+}
+
+func (c UserController) GetUserById(context echo.Context) error {
+	id, err := strconv.Atoi(context.Param("userId"))
+	if err != nil {
+		return context.JSON(http.StatusBadRequest, "Path Parameter 요청 값이 잘못되었습니다.")
+	}
+
+	query := inbound.UserSearchQuery{ID: id}
+
+	user, err := c.userUseCase.FindUserByQuery(&query)
+	if err != nil {
+		return context.JSON(http.StatusNotFound, "찾는 유저가 없습니다.")
+	}
+
+	return context.JSON(http.StatusOK, user)
+}
+
+func (c UserController) GetUsers(context echo.Context) error {
+	users, err := c.userUseCase.FindUsersByQuery()
+
+	if err != nil {
+		return context.JSON(http.StatusOK, []entity.User{})
+	}
+
+	return context.JSON(http.StatusOK, users)
 }

@@ -1,8 +1,8 @@
 package entity
 
 import (
+	"github.com/google/uuid"
 	"log"
-	commandBus "persona/internal/user/event/bus"
 	"persona/internal/user/port"
 	"persona/libs/security"
 	"time"
@@ -13,6 +13,8 @@ type UserSpecification interface {
 }
 
 type User struct {
+	ID        int
+	UUID      uuid.UUID
 	Username  string
 	Password  string
 	Email     string
@@ -31,25 +33,23 @@ func New(username, password, email string) *User {
 }
 
 func (root User) Register(command *port.UserRegisterInBoundPort) (*User, error) {
-	password, err := hashPassword(command.Password)
+	password, err := encodeHashPassword(command.Password)
 	if err != nil {
 		return &User{}, err
 	}
 
 	user := &User{
-		Username: command.Username,
-		Password: password,
-		Email:    command.Email,
+		Username:  command.Username,
+		Password:  password,
+		Email:     command.Email,
+		CreatedAt: time.Now(),
+		UpdatedAt: time.Now(),
 	}
-
-	//registerCommandEvent := make(chan string)
-	bus := commandBus.New()
-	go bus.Publish("RegistrationUserMembershipEvent", user)
 
 	return user, nil
 }
 
-func hashPassword(password string) (string, error) {
+func encodeHashPassword(password string) (string, error) {
 	hashedPassword, err := security.NewBCrypt().HashingPassword(password)
 	if err != nil {
 		log.Fatalln("Password Hashing error: ", err)
