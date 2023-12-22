@@ -1,26 +1,10 @@
 package token
 
 import (
-	"fmt"
 	"github.com/labstack/echo/v4"
-	"persona/internal/user/service"
+	"persona/internal/user/domain/service"
 	"persona/libs/database/redis"
 )
-
-func JwtTokenParser(next echo.HandlerFunc) echo.HandlerFunc {
-	return func(context echo.Context) error {
-		//user := context.Get("user").(*jwt.Token)
-		//claims := user.Claims.(jwt.MapClaims)
-		//isAdmin := claims["admin"].(bool)
-		//
-		//if isAdmin == false {
-		//	return echo.ErrUnauthorized
-		//}
-		fmt.Println("z=================================")
-
-		return next(context)
-	}
-}
 
 func BearerTokenParser(next echo.HandlerFunc) echo.HandlerFunc {
 	return func(context echo.Context) error {

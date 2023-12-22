@@ -3,6 +3,7 @@ package redis
 import (
 	"context"
 	json2 "encoding/json"
+	"errors"
 	"fmt"
 	redis "github.com/redis/go-redis/v9"
 	"log"
@@ -117,7 +118,7 @@ func (r Redis) Get(key string) (*Response, error) {
 
 	data, err := client.Get(context.Background(), key).Result()
 	if err != nil {
-		if err == redis.Nil {
+		if errors.Is(err, redis.Nil) {
 			return nil, fmt.Errorf("key not found")
 		}
 		return nil, err

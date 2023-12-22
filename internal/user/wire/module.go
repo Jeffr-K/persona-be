@@ -2,8 +2,8 @@ package wire
 
 import (
 	"github.com/labstack/echo/v4"
-	"persona/internal/user/controller"
-	"persona/internal/user/route"
+	"persona/internal/user/presentor/controller"
+	"persona/internal/user/presentor/route"
 )
 
 func RegisterUserModule(server *echo.Echo) {

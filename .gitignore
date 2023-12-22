@@ -2,3 +2,5 @@
 .air.toml
 tmp
 /libs/database/ent
+.env
+.env.production

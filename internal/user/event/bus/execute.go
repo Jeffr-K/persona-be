@@ -1,5 +1,0 @@
-package bus
-
-func UserCommandBusExecutor() {
-
-}

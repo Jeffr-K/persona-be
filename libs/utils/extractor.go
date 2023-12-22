@@ -3,7 +3,7 @@ package utils
 import (
 	"fmt"
 	"github.com/labstack/echo/v4"
-	"persona/internal/user/entity"
+	"persona/internal/user/domain/entity"
 )
 
 func ExtractUserFromContext(context echo.Context) (entity.User, error) {

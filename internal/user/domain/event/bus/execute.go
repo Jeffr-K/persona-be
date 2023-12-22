@@ -1,0 +1,5 @@
+package bus
+
+func UserCommandBusExecutor() {
+
+}

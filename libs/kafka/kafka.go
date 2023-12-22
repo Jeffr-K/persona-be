@@ -53,7 +53,7 @@ func (queue Queue) Produce(message string) error {
 	a := "message"
 
 	msg[a] = message
-	msg1 := Messages{Message: "잉구잉구다. 엥구엥구당"}
+	msg1 := Messages{Message: "Domain Event."}
 
 	json, err := json2.Marshal(msg1)
 	if err != nil {
